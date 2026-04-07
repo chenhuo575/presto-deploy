@@ -45,7 +45,7 @@ const LoginPage = () => {
                 </div>
                 <button type="submit">Login</button>
             </form>
-            <ErrorPopup message={error} onChange={(e) => setError('')} />
+            <ErrorPopup message={error} onClose={() => setError('')} />
         </div>
     );
 };
