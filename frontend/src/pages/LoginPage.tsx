@@ -24,7 +24,7 @@ const LoginPage = () => {
                 setError(data.error);
             } else {
                 localStorage.setItem('token', data.token);
-                navigate('/admin');
+                navigate('/dashboard');
             }
         } catch (err) {
             setError('An unexpected error occurred. Please try again.');
