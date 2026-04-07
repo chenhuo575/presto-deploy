@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ErrorPopup from '../components/ErrorPopup';
 import config from '../../backend.config.json';

@@ -10,7 +10,7 @@ const Dashboard = () => {
     const handleLogout = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:${config.BACKEND_PORT}/admin/auth/logout`, {
+            await fetch(`http://localhost:${config.BACKEND_PORT}/admin/auth/logout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
