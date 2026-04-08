@@ -8,11 +8,10 @@ import type { Presentation, Slide } from '../types';
 const Dashboard = () => {
     const [error, setError] = useState('');
     const [presentations, setPresentations] = useState<Presentation[]>([]);
-    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    const [showEditTitle, setShowEditTitle] = useState(false);
-    const [editTitelleValue, setEditTitleValue] = useState('');
-    const [showEditThumbnail, setShowEditThumbnail] = useState(false);
+    const [newName, setNewName] = useState('');
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [newDescription, setNewDescription] = useState('');
+    const [newThumbnail, setNewThumbnail] = useState('');
     const navigate = useNavigate();
 
     const fetchPresentations =async () =>{
@@ -42,6 +41,47 @@ const Dashboard = () => {
             setError('An unexpected error occurred. Please try again.');
         }
     };
+
+    const generateId = (): string =>{
+        return `${Date.now()}-${Math.random().toString(16).slice(2,9)}`;
+    }
+
+    const handleCreate = async () => {
+        try {
+            const store = await getStore();
+            const defaultSlide: Slide = {
+                id: generateId(),
+                elements: [],
+                background: {
+                    type: 'solid',
+                    value: '#ffffff'
+                }
+            };
+            const newPresentation: Presentation ={
+                id: generateId(),
+                name: newName.trim() || 'Untitled Presentation',
+                description: newDescription.trim() || '',
+                thumbnail: newThumbnail.trim() || '',
+                slides: [defaultSlide],
+                defaultBackground: {
+                    type: 'solid',
+                    value: '#ffffff'
+                }
+            }
+            const updatedStore = {
+                ...store,
+                presentations: [...store.presentations, newPresentation],
+            }
+            await putStore(updatedStore);
+            setPresentations(updatedStore.presentations);
+            setShowCreateModal(false);
+            setNewName('');
+            setNewDescription('');
+            setNewThumbnail('');
+        } catch (error) {
+            setError('Failed to create presentation. Please try again.');
+        }
+    }
 
     return (
         <div>
