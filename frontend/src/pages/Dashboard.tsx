@@ -83,6 +83,17 @@ const Dashboard = () => {
         }
     }
 
+    const handleThumbnailFile =(e : React.ChangeEvent<HTMLInputElement>) =>{
+        const file =e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setNewThumbnail(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+    
+    }
+
     return (
         <div>
             <h1>Dashboard</h1>
