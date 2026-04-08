@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import ErrorPopup from '../components/ErrorPopup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import config from '../../backend.config.json';
+import { getStore } from '../api';
 
 const Dashboard = () => {
     const [error, setError] = useState('');
