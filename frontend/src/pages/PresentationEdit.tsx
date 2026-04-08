@@ -83,4 +83,21 @@ const PresentationEdit = () => {
         reader.readAsDataURL(file);
     }
 
+    const handleAddSlide = async () =>{
+        if (!presentation) return;
+        const newSlide: Slide = {
+            id: generateId(),
+            elements: [],
+            background: {
+                type: 'solid',
+                value: '#ffffff'
+            }
+        };
+        const updated: Presentation = {
+            ...presentation,
+            slides: [...presentation.slides, newSlide],
+        };
+        await savePresentation(updated);
+        setCurrentSlideIndex(updated.slides.length - 1);
+    };
 }
