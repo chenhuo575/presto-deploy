@@ -1,5 +1,5 @@
 import {useParams, useNavigate} from 'react-router-dom';
-import { useState, useEffect, useCallback} from 'react';
+import { useState, useEffect, useCallback, use} from 'react';
 import ErrorPopup from '../components/ErrorPopup';
 import { getStore, putStore } from '../api';
 import type { Presentation, Slide } from '../types';
@@ -112,4 +112,20 @@ const PresentationEdit = () => {
         setCurrentSlideIndex((prev)=> Math.min(prev, newSlides.length - 1));
     }
 
+    useEffect(() => {
+        const handleKeyDown= (e: KeyboardEvent) =>{
+            if (!presentation) return;
+            const tag = (e.target as HTMLElement).tagName;
+            if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+            if (e.key === 'ArrowLeft') {
+                setCurrentSlideIndex((prev) => Math.max(prev - 1, 0));
+            } else if (e.key === 'ArrowRight') {
+                setCurrentSlideIndex((prev) => Math.min(prev + 1, presentation.slides.length - 1));
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [presentation]);
 }
+    
