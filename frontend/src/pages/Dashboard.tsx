@@ -91,13 +91,60 @@ const Dashboard = () => {
             setNewThumbnail(reader.result as string);
         };
         reader.readAsDataURL(file);
-    
     }
 
     return (
-        <div>
-            <h1>Dashboard</h1>
-            <button onClick={handleLogout}>Logout</button>
+        <div style={{ padding: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h2>Dashboard</h2>
+                <button onClick={handleLogout}>Logout</button>
+            </div>
+
+            <button onClick={() => setShowCreateModal(true)}>Create New Presentation</button>
+
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                gap: '20px',
+            }}>
+                {presentations.map((presentation) => (
+                    <div 
+                        key={presentation.id} 
+                        onClick={() => navigate(`/presentation/edit?id=${presentation.id}`)}
+                        style={{
+                        aspectRatio: '2 / 1',
+                        minWidth: '100px',
+                        border: '1px solid #ccc',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        padding: '12px',
+                        gap: '12px',
+                        backgroundColor: '#1e1e1e',
+                        }}>
+                        {presentation.thumbnail ? (
+                            <img 
+                            src={presentation.thumbnail} 
+                            alt={presentation.name} 
+                            style={{
+                            width: '60px',
+                            height: '60px',
+                            objectFit: 'cover',
+                            borderRadius: '4px',
+                            flexShrink: 0,
+                            }} /> ):(
+                            <div style={{
+                                width: '60px',
+                                height: '60px',
+                                backgroundColor: '#333',
+                                borderRadius: '4px',
+                                flexShrink: 0,
+                            }} />
+                        )}
+                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            </div>
             <ErrorPopup message={error} onClose={() => setError('')} />
         </div>
     );
