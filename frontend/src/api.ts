@@ -15,7 +15,10 @@ export const getStore = async (): Promise<Store> => {
     })
     const data = await res.json();
     if (data.error) throw new Error(data.error);
-    return data.store as Store;
+    const raw=data.store ?? {};
+    return {
+        presentations: Array.isArray(raw.presentations) ? raw.presentations : [],
+    };
 }
 
 export const putStore = async (store: Store): Promise<void> => {
