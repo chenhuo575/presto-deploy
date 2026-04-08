@@ -105,7 +105,7 @@ const Dashboard = () => {
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                gap: '20px',
+                gap: '16px',
             }}>
                 {presentations.map((presentation) => (
                     <div 
@@ -143,8 +143,70 @@ const Dashboard = () => {
                                 flexShrink: 0,
                             }} />
                         )}
-                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <div style={{ overflow: 'hidden'}}>
+                            <strong style ={{ display: 'block', marginBottom:'4px'}}>{presentation.name}</strong>
+                            {presentation.description && (<p style={{ fontSize: '0.8em', margin: '0 0 4px 0', color: '#ccc'}}>
+                                {presentation.description}</p>)}
+                            <p style={{ fontSize: '0.75em', margin: 0, color: '#aaa'}}>
+                                {presentation.slides.length} {presentation.slides.length === 1 ? 'slide' : 'slides'}
+                            </p>
+                        </div>
+                    </div>
+                ))}
             </div>
+
+            {showCreateModal && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000,
+                }}>
+                    <div style={{
+                        backgroundColor: '#fff',
+                        padding: '24px',
+                        borderRadius: '8px',
+                        minWidth: '380px',
+                        color: '#000',
+                    }}>
+                        <h3>Create New Presentation</h3>
+                        <div style={{ marginBottom: '12px' }}>
+                             <label style={{ display: 'block', marginBottom: '4px' }}>Name:</label>
+                            <input type="text" 
+                            value={newName} 
+                            onChange={(e) => setNewName(e.target.value)} 
+                            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+                            />
+                        </div>
+                        <div style={{ marginBottom: '12px' }}>
+                            <label style={{ display: 'block', marginBottom: '4px' }}>Description:</label>
+                            <textarea
+                                value={newDescription}
+                                onChange={(e) => setNewDescription(e.target.value)}
+                                style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
+                            />
+                        </div>
+                        <div style={{ marginBottom: '16px' }}>
+                            <label style={{ display: 'block', marginBottom: '4px' }}>Thumbnail:</label>
+                            <input type="file" accept="image/*" onChange={handleThumbnailFile} />
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                            <button onClick={() => {
+                                setShowCreateModal(false);
+                                setNewName('');
+                                setNewDescription('');
+                                setNewThumbnail('');
+                            }}>
+                              Cancel
+                            </button>
+                            <button onClick={handleCreate} disabled={!newName.trim()}>Create</button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <ErrorPopup message={error} onClose={() => setError('')} />
         </div>
     );
