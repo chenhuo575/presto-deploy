@@ -100,4 +100,16 @@ const PresentationEdit = () => {
         await savePresentation(updated);
         setCurrentSlideIndex(updated.slides.length - 1);
     };
+
+    const handleDeleteSlide =async () =>{
+        if (!presentation) return;
+        if (presentation.slides.length <= 1) {
+            setError('Presentation must have at least one slide');
+            return;
+        }
+        const newSlides = presentation.slides.filter((_, i) => i !== currentSlideIndex);
+        await savePresentation({ ...presentation, slides: newSlides });
+        setCurrentSlideIndex((prev)=> Math.min(prev, newSlides.length - 1));
+    }
+
 }
