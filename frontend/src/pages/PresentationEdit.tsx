@@ -127,5 +127,36 @@ const PresentationEdit = () => {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [presentation]);
+
+    if (!presentation) {
+        return (
+            <div style={{ padding: '20px'}}>
+            <p>Loading...</p>
+            <ErrorPopup message={error} onClose={() => setError('')} />
+            </div>
+        );
+    }
+    const totalSlides = presentation.slides.length;
+    const isFirst = currentSlideIndex === 0;
+    const isLast = currentSlideIndex === totalSlides - 1;
+
+    return (
+        <div style={{ padding: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <button onClick={() => navigate('/dashboard')}>Back</button>
+                <button onClick={()=>setShowDeleteConfirm(true)} style={{ color: 'red'}}>Delete</button>
+            </div>
+            <div style={{display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                <h2 style={{ margin: 0 }}>{presentation.name}</h2>
+                <button onClick={() => setShowEditTitle(true)} title="Edit title">Edit Title</button>
+                <button onClick={() => setShowEditThumbnail(true)} title="Edit thumbnail">Edit Thumbnail</button>
+            </div>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+                <button onClick={handleAddSlide} title="Add slide">Add Slide</button>
+                <button onClick={handleDeleteSlide} title="Delete current slide">Delete Slide</button>
+            </div>
+
+        </div>
+    )
 }
     
