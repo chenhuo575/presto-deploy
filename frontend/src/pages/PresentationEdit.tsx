@@ -156,6 +156,53 @@ const PresentationEdit = () => {
                 <button onClick={handleDeleteSlide} title="Delete current slide">Delete Slide</button>
             </div>
 
+            <div style={{ position: 'relative', width: '100%', maxWidth: '900px', aspectRatio: '2 / 1', backgroundColor: '#eee', border: '2px solid #444', borderRadius: '8px', overflow: 'hidden' }}>
+                <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                    <p style={{color: '#bbb', padding: '16px'}}>
+                        Slide {currentSlideIndex + 1} - {presentation.slides[currentSlideIndex]?.elements.length ?? 0} element(s)
+                    </p>
+                </div>
+            </div>
+
+            <div style={{position: 'absolute', bottom: '8px', left: '12px', fontSize: '1em', color: '#555', fontWeight: 'bold' , userSelect: 'none'}}>
+                {currentSlideIndex + 1}
+            </div>
+
+            {totalSlides > 1 && (
+                <>
+                    <button onClick={() => setCurrentSlideIndex((prev) => Math.max(prev - 1, 0))} disabled={isFirst} aria-label="Previous slide" style={{position:'absolute',left: '8px',top: '50%',
+                        transform: 'translateY(-50%)',
+                        fontSize: '1.5em',
+                        background: 'rgba(255,255,255,0.7)',
+                        border: '1px solid #ccc',
+                        borderRadius: '4px',
+                        cursor: isFirst ? 'not-allowed' : 'pointer',
+                        opacity: isFirst ? 0.3 : 1,
+                        padding: '4px 8px',}}>
+                     ◀
+                    </button>
+                    <button
+                        onClick={() => setCurrentSlideIndex((prev) => prev + 1)}
+                        disabled={isLast}
+                        aria-label="Next slide"
+                        style={{
+                            position: 'absolute',
+                            right: '8px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            fontSize: '1.5em',
+                            background: 'rgba(255,255,255,0.7)',
+                            border: '1px solid #ccc',
+                            borderRadius: '4px',
+                            cursor: isLast ? 'not-allowed' : 'pointer',
+                            opacity: isLast ? 0.3 : 1,
+                            padding: '4px 8px',
+                        }}
+                        >
+                        ▶
+                        </button>
+                </>
+            )}
         </div>
     )
 }
