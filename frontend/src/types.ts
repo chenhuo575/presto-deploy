@@ -7,26 +7,18 @@ export interface SlideElement {
 }
 
 export interface Slide {
-    id: string;
-    elements: SlideElement[];
-    background?: {
-        type: 'solid' | 'gradient' | 'image';
-        value: string;
-    };
+  id: string;
+  elements: unknown[];
 }
 
 export interface Presentation {
-    id: string;
-    name: string;
-    description: string;
-    thumbnail: string;
-    slides: Slide[];
-    defaultBackground:{
-        type: 'solid' | 'gradient' | 'image';
-        value: string;
-    }
+  id: string;
+  name: string;
+  description: string;
+  thumbnail: string;
+  slides: Slide[];
 }
 
 export interface Store {
-    presentations: Presentation[];
+  presentations: Presentation[];
 }
