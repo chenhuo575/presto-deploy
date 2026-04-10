@@ -204,6 +204,92 @@ const PresentationEdit = () => {
                 </>
             )}
         </div>
-    )
-}
+        
+        {showDeleteConfirm && (
+            <div
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000,
+                }}>
+                <div 
+                    style={{
+                        backgroundColor: 'white',
+                        padding: '20px',
+                        borderRadius: '8px',
+                        color: '#000',
+                        minWidth: '320px',
+                    }}>
+                    <h3 style={{ marginTop: 0}}>Edit Title</h3>
+                    <input
+                        type="text"
+                        value={editTitelleValue}
+                        onChange={(e) => setEditTitleValue(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleSaveTitle() }}
+                        style={{ width: '100%', padding: '8px', marginBottom: '16px'}}/>
+                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                            <button onClick={() => setShowDeleteConfirm(false)}>Cancel</button>
+                            <button onClick={handleSaveTitle}>Save</button>
+                        </div>
+                </div>
+            </div>
+        )}
+
+        {showEditThumbnail && (
+            <div
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 1000,
+                }}>
+                <div 
+                    style={{
+                        backgroundColor: 'white',
+                        padding: '20px',
+                        borderRadius: '8px',
+                        color: '#000',
+                        minWidth: '320px',
+                    }}>
+                    <h3 style={{ marginTop: 0}}>Update Thumbnail</h3>
+                    {presentation.thumbnail && (
+                        <img src={presentation.thumbnail}
+                        alt="Current thumbnail"
+                        style={{
+                            width: '100%',
+                            maxHeight: '120px',
+                            objectFit: 'contain',
+                            marginBottom: '12px',
+                            borderRadius: '4px',
+                        }}/>
+                    )}
+                    <input 
+                        type="file"
+                        accept="image/*"
+                        onChange={handleThumbnailChange}/>
+                    <div style={{marginTop: '16px', textAlign:'right'}}>
+                        <button onClick={() => setShowEditThumbnail(false)}>Cancel</button>
+                    </div>
+                </div>
+            </div>
+        )}
+            <ErrorPopup message={error} onClose={() => setError('')} />
+        </div>
+    );
+};
+
+export default PresentationEdit;
     
