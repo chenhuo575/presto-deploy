@@ -92,55 +92,45 @@ const Dashboard = () => {
             <button onClick={() => setShowCreateModal(true)}>Create New Presentation</button>
 
             <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                display: 'flex',
+                flexWrap: 'wrap',
                 gap: '16px',
+                marginTop: '20px',
             }}>
-                {presentations.map((presentation) => (
-                    <div 
-                        key={presentation.id} 
-                        onClick={() => navigate(`/presentation/edit?id=${presentation.id}`)}
-                        style={{
-                        aspectRatio: '2 / 1',
-                        minWidth: '100px',
-                        border: '1px solid #ccc',
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        overflow: 'hidden',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        padding: '12px',
-                        gap: '12px',
-                        backgroundColor: '#1e1e1e',
-                        }}>
-                        {presentation.thumbnail ? (
-                            <img 
-                            src={presentation.thumbnail} 
-                            alt={presentation.name} 
-                            style={{
-                            width: '60px',
-                            height: '60px',
-                            objectFit: 'cover',
-                            borderRadius: '4px',
-                            flexShrink: 0,
-                            }} /> ):(
-                            <div style={{
-                                width: '60px',
-                                height: '60px',
-                                backgroundColor: '#333',
-                                borderRadius: '4px',
-                                flexShrink: 0,
-                            }} />
-                        )}
-                        <div style={{ overflow: 'hidden'}}>
-                            <strong style ={{ display: 'block', marginBottom:'4px'}}>{presentation.name}</strong>
-                            {presentation.description && (<p style={{ fontSize: '0.8em', margin: '0 0 4px 0', color: '#ccc'}}>
-                                {presentation.description}</p>)}
-                            <p style={{ fontSize: '0.75em', margin: 0, color: '#aaa'}}>
-                                {presentation.slides.length} {presentation.slides.length === 1 ? 'slide' : 'slides'}
-                            </p>
-                        </div>
+                {presentations.map((pres) => (
+                <div
+                    key={pres.id}
+                    onClick={() => navigate(`/presentation/${pres.id}`)}
+                    style={{
+                    width: '250px',
+                    minWidth: '100px',
+                    aspectRatio: '2 / 1',
+                    border: '1px solid #ccc',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: '12px',
+                    backgroundColor: '#1a1a1a',
+                    }}
+                >
+                    {pres.thumbnail ? (
+                    <img
+                        src={pres.thumbnail}
+                        alt={pres.name}
+                        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }}
+                    />
+                    ) : (
+                    <div style={{ width: '50px', height: '50px', backgroundColor: 'grey', borderRadius: '4px' }} />
+                    )}
+                    <div>
+                    <strong>{pres.name}</strong>
+                    {pres.description && <p style={{ fontSize: '0.8em', margin: '4px 0' }}>{pres.description}</p>}
+                    <p style={{ fontSize: '0.75em', color: '#aaa' }}>{pres.slides.length} slide(s)</p>
                     </div>
+                </div>
                 ))}
             </div>
 
