@@ -78,6 +78,57 @@ const PresentationEdit = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleAddSlide = async () => {
+    if (!presentation) return;
+    const newSlide: Slide = {
+      id: `slide-${Date.now()}`,
+      elements: [],
+    };
+    const updated = {
+      ...presentation,
+      slides: [...presentation.slides, newSlide],
+    };
+    await savePresentation(updated);
+    setCurrentSlideIndex(updated.slides.length - 1);
+  };
+
+  const handleDeleteSlide = async () => {
+    if (!presentation) return;
+    if (presentation.slides.length <= 1) {
+      setError('Cannot delete the only slide. Please delete the presentation instead.');
+      return;
+    }
+    const newSlides = presentation.slides.filter((_, i) => i !== currentSlideIndex);
+    await savePresentation({ ...presentation, slides: newSlides });
+    setCurrentSlideIndex(Math.max(0, currentSlideIndex - 1));
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!presentation) return;
+      if (e.key === 'ArrowLeft' && currentSlideIndex > 0) {
+        setCurrentSlideIndex((prev) => prev - 1);
+      }
+      if (e.key === 'ArrowRight' && currentSlideIndex < presentation.slides.length - 1) {
+        setCurrentSlideIndex((prev) => prev + 1);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [presentation, currentSlideIndex]);
+
+  if (!presentation) {
+    return (
+      <div>
+        <p>Loading...</p>
+        <ErrorPopup message={error} onClose={() => setError('')} />
+      </div>
+    );
+  }
+
+  const currentSlide = presentation.slides[currentSlideIndex];
+  const totalSlides = presentation.slides.length;
+
 
 };
 
