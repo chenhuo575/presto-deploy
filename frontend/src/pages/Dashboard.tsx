@@ -135,53 +135,39 @@ const Dashboard = () => {
             </div>
 
             {showCreateModal && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0,left: 0, right: 0, bottom: 0,
-                    backgroundColor: 'rgba(0,0,0,0.5)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    zIndex: 1000,
+                <div
+                    style={{
+                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                        display: 'flex', justifyContent: 'center', alignItems: 'center',
+                        zIndex: 1000,
                 }}>
-                    <div style={{
-                        backgroundColor: '#fff',
-                        padding: '24px',
-                        borderRadius: '8px',
-                        minWidth: '380px',
-                        color: '#000',
-                    }}>
+                    <div style={{ background: 'white', padding: '24px', borderRadius: '8px', minWidth: '350px', color: '#000' }}>
                         <h3>Create New Presentation</h3>
                         <div style={{ marginBottom: '12px' }}>
-                             <label style={{ display: 'block', marginBottom: '4px' }}>Name:</label>
-                            <input type="text" 
-                            value={newName} 
-                            onChange={(e) => setNewName(e.target.value)} 
-                            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-                            />
+                        <label>Name:</label>
+                        <input
+                            type="text"
+                            value={newName}
+                            onChange={(e) => setNewName(e.target.value)}
+                            style={{ width: '100%', padding: '6px' }}
+                        />
                         </div>
                         <div style={{ marginBottom: '12px' }}>
-                            <label style={{ display: 'block', marginBottom: '4px' }}>Description:</label>
-                            <textarea
-                                value={newDescription}
-                                onChange={(e) => setNewDescription(e.target.value)}
-                                style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-                            />
+                        <label>Description:</label>
+                        <textarea
+                            value={newDescription}
+                            onChange={(e) => setNewDescription(e.target.value)}
+                            style={{ width: '100%', padding: '6px' }}
+                        />
                         </div>
-                        <div style={{ marginBottom: '16px' }}>
-                            <label style={{ display: 'block', marginBottom: '4px' }}>Thumbnail:</label>
-                            <input type="file" accept="image/*" onChange={handleThumbnailFile} />
+                        <div style={{ marginBottom: '12px' }}>
+                        <label>Thumbnail:</label>
+                        <input type="file" accept="image/*" onChange={handleThumbnailFile} />
                         </div>
                         <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
-                            <button onClick={() => {
-                                setShowCreateModal(false);
-                                setNewName('');
-                                setNewDescription('');
-                                setNewThumbnail('');
-                            }}>
-                              Cancel
-                            </button>
-                            <button onClick={handleCreate} disabled={!newName.trim()}>Create</button>
+                        <button onClick={() => setShowCreateModal(false)}>Cancel</button>
+                        <button onClick={handleCreate}>Create</button>
                         </div>
                     </div>
                 </div>
