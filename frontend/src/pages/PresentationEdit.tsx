@@ -129,7 +129,92 @@ const PresentationEdit = () => {
   const currentSlide = presentation.slides[currentSlideIndex];
   const totalSlides = presentation.slides.length;
 
+  return (
+    <div style={{ padding: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <button onClick={() => navigate('/dashboard')}>← Back</button>
+        <button onClick={() => setShowDeleteConfirm(true)} style={{ color: 'red' }}>
+          Delete Presentation
+        </button>
+      </div>
 
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+        <h2 style={{ margin: 0 }}>{presentation.name}</h2>
+        <button onClick={() => setShowEditTitle(true)} style={{ fontSize: '0.8em' }}>✏️ Edit Title</button>
+        <button onClick={() => setShowEditThumbnail(true)} style={{ fontSize: '0.8em' }}>🖼️ Thumbnail</button>
+      </div>
+
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+        <button onClick={handleAddSlide}>+ New Slide</button>
+        <button onClick={handleDeleteSlide}>🗑️ Delete Slide</button>
+      </div>
+
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '800px',
+          aspectRatio: '2 / 1',
+          border: '2px solid #555',
+          borderRadius: '8px',
+          backgroundColor: '#fff',
+          overflow: 'hidden',
+        }}
+      >
+        <div style={{ width: '100%', height: '100%', padding: '16px' }}>
+          <p style={{ color: '#999' }}>Slide content for: {currentSlide?.id}</p>
+        </div>
+
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '8px',
+            left: '12px',
+            fontSize: '0.85em',
+            color: '#666',
+          }}
+        >
+          {currentSlideIndex + 1}
+        </div>
+
+        {totalSlides > 1 && (
+          <>
+            <button
+              onClick={() => setCurrentSlideIndex((prev) => prev - 1)}
+              disabled={currentSlideIndex === 0}
+              style={{
+                position: 'absolute',
+                left: '8px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                opacity: currentSlideIndex === 0 ? 0.3 : 1,
+                cursor: currentSlideIndex === 0 ? 'not-allowed' : 'pointer',
+              }}
+            >
+              ◀
+            </button>
+            <button
+              onClick={() => setCurrentSlideIndex((prev) => prev + 1)}
+              disabled={currentSlideIndex === totalSlides - 1}
+              style={{
+                position: 'absolute',
+                right: '8px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                opacity: currentSlideIndex === totalSlides - 1 ? 0.3 : 1,
+                cursor: currentSlideIndex === totalSlides - 1 ? 'not-allowed' : 'pointer',
+              }}
+            >
+              ▶
+            </button>
+          </>
+        )}
+      </div>
+
+
+      <ErrorPopup message={error} onClose={() => setError('')} />
+    </div>
+  );
 };
 
 export default PresentationEdit;
