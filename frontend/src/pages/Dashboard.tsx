@@ -14,10 +14,10 @@ const Dashboard = () => {
     const [newThumbnail, setNewThumbnail] = useState('');
     const navigate = useNavigate();
 
-    const fetchPresentations =async () =>{
-        try{
-            const store =await getStore();
-            setPresentations(store.presentations);
+    const fetchPresentations = async () => {
+        try {
+            const store = await getStore();
+            setPresentations(store.presentations ?? []);
         } catch (err) {
             if (err instanceof Error) setError(err.message);
         }
