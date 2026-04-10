@@ -18,8 +18,8 @@ const Dashboard = () => {
         try{
             const store =await getStore();
             setPresentations(store.presentations);
-        } catch (error) {
-            setError('Failed to fetch presentations.');
+        } catch (err) {
+            if (err instanceof Error) setError(err.message);
         }
     };
 
@@ -42,56 +42,45 @@ const Dashboard = () => {
         }
     };
 
-    const generateId = (): string =>{
-        return `${Date.now()}-${Math.random().toString(16).slice(2,9)}`;
-    }
-
     const handleCreate = async () => {
         try {
-            const store = await getStore();
-            const defaultSlide: Slide = {
-                id: generateId(),
-                elements: [],
-                background: {
-                    type: 'solid',
-                    value: '#ffffff'
-                }
-            };
-            const newPresentation: Presentation ={
-                id: generateId(),
-                name: newName.trim() || 'Untitled Presentation',
-                description: newDescription.trim() || '',
-                thumbnail: newThumbnail.trim() || '',
-                slides: [defaultSlide],
-                defaultBackground: {
-                    type: 'solid',
-                    value: '#ffffff'
-                }
-            }
-            const updatedStore = {
-                ...store,
-                presentations: [...store.presentations, newPresentation],
-            }
-            await putStore(updatedStore);
-            setPresentations(updatedStore.presentations);
-            setShowCreateModal(false);
-            setNewName('');
-            setNewDescription('');
-            setNewThumbnail('');
-        } catch (error) {
-            setError('Failed to create presentation. Please try again.');
+        const store = await getStore();
+        const existingPresentations = store.presentations ?? [];
+        const defaultSlide: Slide = {
+            id: `slide-${Date.now()}`,
+            elements: [],
+        };
+        const newPresentation: Presentation = {
+            id: `pres-${Date.now()}`,
+            name: newName || 'Untitled Presentation',
+            description: newDescription,
+            thumbnail: newThumbnail,
+            slides: [defaultSlide],
+        };
+        const updated = {
+            ...store,
+            presentations: [...existingPresentations, newPresentation],
+        };
+        await putStore(updated);
+        setPresentations(updated.presentations);
+        setShowCreateModal(false);
+        setNewName('');
+        setNewDescription('');
+        setNewThumbnail('');
+        } catch (err) {
+        if (err instanceof Error) setError(err.message);
         }
-    }
+    };
 
-    const handleThumbnailFile =(e : React.ChangeEvent<HTMLInputElement>) =>{
-        const file =e.target.files?.[0];
+    const handleThumbnailFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
         if (!file) return;
         const reader = new FileReader();
         reader.onloadend = () => {
-            setNewThumbnail(reader.result as string);
+        setNewThumbnail(reader.result as string);
         };
         reader.readAsDataURL(file);
-    }
+    };
 
     return (
         <div style={{ padding: '20px' }}>
