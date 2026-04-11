@@ -1,14 +1,6 @@
-export interface SlideElement {
-    id: string;
-    type: 'text' | 'image' | 'video' | 'code';
-    position: { x: number; y: number };
-    size: { width: number; height: number };
-    [key: string]: unknown;
-}
-
 export interface Slide {
   id: string;
-  elements: unknown[];
+  elements: SlideElement[];
 }
 
 export interface Presentation {
@@ -22,3 +14,18 @@ export interface Presentation {
 export interface Store {
   presentations: Presentation[];
 }
+
+export interface TextElement {
+  id: string;
+  type: 'text';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  text: string;
+  fontSize: number;
+  color: string;
+  layer: number;
+}
+
+export type SlideElement = TextElement;
