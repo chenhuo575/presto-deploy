@@ -172,6 +172,10 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ open, element, onClose, o
                                 />
                             </label>
                         </div>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' ,gap: '8px'}}>
+                            <button type="button" onClick={onClose}>Cancel</button>
+                            <button type="submit">Save</button>
+                        </div>
                     </form>
                 </div>
             </div>
