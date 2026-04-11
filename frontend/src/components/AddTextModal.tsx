@@ -3,7 +3,7 @@ import React, { useState} from 'react';
 interface AddTextModalProps {
     open: boolean;
     onClose: () => void;
-    onAdd: (text: string) => void;
+    onAdd: (data: TextDate) => void;
 }
 
 export interface TextDate{
