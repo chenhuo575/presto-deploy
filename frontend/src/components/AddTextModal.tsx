@@ -67,7 +67,64 @@ const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onAdd }) => 
             >
                 <h2>Add Text box</h2>
                 <form onSubmit={handleSubmit}>
+                    <div style={{ marginBottom: '16px' }}>
+                        <label>      
+                            Width (%):
+                            <input
+                                type="number"
+                                min="0"
+                                max="100"
+                                value={width}
+                                onChange={(e) => setWidth(Number(e.target.value))}/>
+                        </label>
+                    </div>
+                    <div style={{ marginBottom: '16px' }}>
+                        <label>
+                            Height (%):
+                            <input
+                                type="number"
+                                min="0"
+                                max="100"
+                                value={height}
+                                onChange={(e) => setHeight(Number(e.target.value))}/>
+                        </label>
+                    </div>
+                    <div style={{ marginBottom: '16px' }}>
+                        <label>
+                            Font Size (em):
+                            <input
+                                type="number"
+                                min="0.1"
+                                step="0.1"
+                                value={fontSize}
+                                onChange={(e) => setFontSize(Number(e.target.value))}
+                                style={{ marginLeft: '8px', width:'80px'}}/>
+                        </label>
+                    </div>
+                    <div style={{ marginBottom: '16px' }}>
+                        <label>
+                            Color:
+                            <input
+                                type="color"
+                                value={color}
+                                onChange={(e) => setColor(e.target.value)}
+                                style={{ marginLeft: '8px' }}/>
+                            <input
+                                type="text"
+                                value={color}
+                                onChange={(e) => setColor(e.target.value)}
+                                style={{ marginLeft: '8px', width:'100px' }}/>
+                        </label>
+                    </div>
 
+                    <div style={{
+                        display: 'flex',
+                        gap: '8px',
+                        justifyContent: 'flex-end',
+                    }}>
+                        <button type="button" onClick={onClose}>Cancel</button>
+                        <button type="submit">Add</button>
+                    </div>
                 </form>
             </div>
         </div>
