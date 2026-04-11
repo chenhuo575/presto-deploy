@@ -182,6 +182,34 @@ const PresentationEdit = () => {
   const currentSlide = presentation.slides[currentSlideIndex];
   const totalSlides = presentation.slides.length;
 
+  const renderElements = (element: SlideElement) => {
+    if (element.type === 'text') {
+      const textEl = element as TextElement;
+      return (
+        <div
+          key={textEl.id}
+          style={{
+            position: 'absolute',
+            left: `${textEl.x}%`,
+            top: `${textEl.y}%`,
+            width: `${textEl.width}%`,
+            height: `${textEl.height}%`,
+            fontSize: `${textEl.fontSize}px`,
+            color: textEl.color,
+          }}
+          onDoubleClick={() => setEditingElement(textEl)}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            handleDeleteElement(textEl.id);
+          }}
+        >
+          {textEl.text}
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div style={{ padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
@@ -200,6 +228,7 @@ const PresentationEdit = () => {
       <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
         <button onClick={handleAddSlide}>+ New Slide</button>
         <button onClick={handleDeleteSlide}>🗑️ Delete Slide</button>
+        <button onClick={() => setShowAddTextModal(true)}>+ Add Text</button>
       </div>
 
       <div
@@ -214,9 +243,7 @@ const PresentationEdit = () => {
           overflow: 'hidden',
         }}
       >
-        <div style={{ width: '100%', height: '100%', padding: '16px' }}>
-          <p style={{ color: '#999' }}>Slide content for: {currentSlide?.id}</p>
-        </div>
+        {currentSlide?.elements.slice().sort((a, b) => a.layer - b.layer).map(renderElements)}
 
         <div
           style={{
@@ -326,7 +353,16 @@ const PresentationEdit = () => {
           </div>
         </div>
       )}
-      
+      <AddTextModal
+        open={showAddTextModal}
+        onClose={() => setShowAddTextModal(false)}
+        onSubmit={handleAddText}
+      />
+      <EditTextModal
+        element={editingElement}
+        onClose={() => setEditingElement(null)}
+        onSubmit={handleUpdateElement}
+      />
       <ErrorPopup message={error} onClose={() => setError('')} />
     </div>
   );
