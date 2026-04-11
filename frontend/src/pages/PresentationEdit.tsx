@@ -1,8 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import ErrorPopup from '../components/ErrorPopup';
+import AddTextModal, { TextData } from '../components/AddTextModal';
+import EditTextModal from '../components/EditTextModal';
+import TextElementComponent from '../components/TextElement';
 import { getStore, putStore } from '../api';
-import type { Presentation, Slide, Store } from '../types';
+import type { Presentation, Slide, Store, TextElement, SlideElement} from '../types';
 
 const PresentationEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +17,9 @@ const PresentationEdit = () => {
   const [showEditTitle, setShowEditTitle] = useState(false);
   const [editTitleValue, setEditTitleValue] = useState('');
   const [showEditThumbnail, setShowEditThumbnail] = useState(false);
+  const [showAddTextModal, setShowAddTextModal] = useState(false);
+  const [editingElement, setEditingElement] = useState<TextElement | null>(null);
+
 
   const fetchPresentation = useCallback(async () => {
     try {
@@ -101,6 +107,53 @@ const PresentationEdit = () => {
     const newSlides = presentation.slides.filter((_, i) => i !== currentSlideIndex);
     await savePresentation({ ...presentation, slides: newSlides });
     setCurrentSlideIndex(Math.max(0, currentSlideIndex - 1));
+  };
+
+  const handleAddText = async (data: TextData) => {
+    if (!presentation) return;
+    const currentSlide = presentation.slides[currentSlideIndex];
+    const newElement: TextElement = {
+      id: `text-${Date.now()}`,
+      type: 'text',
+      x: 50,
+      y: 50,
+      width: data.width,
+      height: data.height,
+      content: data.content,
+      fontSize: data.fontSize,
+      color: data.color,
+      layer: currentSlide.elements.length,
+    };
+    const updatedSlide = presentation.slides.map((slide, i) =>
+      i === currentSlideIndex
+        ? { ...slide, elements: [...slide.elements, newElement] }
+        : slide
+    );
+    await savePresentation({ ...presentation, slides: updatedSlide });  
+  };
+
+  const handleUpdateElement = async (updatedElement: SlideElement) => {
+    if (!presentation) return;
+    const updatedSlide = presentation.slides.map((slide, i) => i === currentSlideIndex
+      ? {
+          ...slide,
+          elements: slide.elements.map((el) => (el.id === updatedElement.id ? updatedElement : el)),
+        }
+      : slide
+    );
+    await savePresentation({ ...presentation, slides: updatedSlide });
+  };
+
+  const handleDeleteElement = async (elementId: string) => {
+    if (!presentation) return;
+    const updatedSlide = presentation.slides.map((slide, i) => i === currentSlideIndex
+      ? {
+          ...slide,
+          elements: slide.elements.filter((el) => el.id !== elementId),
+        }
+      : slide
+    );
+    await savePresentation({ ...presentation, slides: updatedSlide });
   };
 
   useEffect(() => {
@@ -273,7 +326,7 @@ const PresentationEdit = () => {
           </div>
         </div>
       )}
-
+      
       <ErrorPopup message={error} onClose={() => setError('')} />
     </div>
   );
