@@ -3,10 +3,10 @@ import React, { useState} from 'react';
 interface AddTextModalProps {
     open: boolean;
     onClose: () => void;
-    onAdd: (data: TextDate) => void;
+    onAdd: (data: TextData) => void;
 }
 
-export interface TextDate{
+export interface TextData{
     width: number;
     height: number;
     text: string;
@@ -14,12 +14,12 @@ export interface TextDate{
     color: string;
 }
 
-const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onAdd }) => {
-    const [text, setText] = useState('');
-    const [width, setWidth] = useState(0);
-    const [height, setHeight] = useState(0);
-    const [fontSize, setFontSize] = useState(0);
-    const [color, setColor] = useState('');
+const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onSubmit }) => {
+  const [text, setText] = useState('');
+  const [width, setWidth] = useState(25);
+  const [height, setHeight] = useState(25);
+  const [fontSize, setFontSize] = useState(1);
+  const [color, setColor] = useState('#000000');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -28,7 +28,7 @@ const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onAdd }) => 
             return;
         }
 
-        onAdd({ width, height, text, fontSize, color });
+    onSubmit({ width, height, text, fontSize, color });
 
         setWidth(25);
         setHeight(25);
@@ -91,6 +91,21 @@ const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onAdd }) => 
                     </div>
                     <div style={{ marginBottom: '16px' }}>
                         <label>
+                        Text:
+                        <textarea
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            style={{ 
+                            display: 'block',
+                            width: '100%',
+                            height: '80px',
+                            marginTop: '8px',
+                            }}
+                        />
+                        </label>
+                    </div>
+                    <div style={{ marginBottom: '16px' }}>
+                        <label>
                             Font Size (em):
                             <input
                                 type="number"
@@ -130,3 +145,5 @@ const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onAdd }) => 
         </div>
     )
 }
+
+export default AddTextModal;

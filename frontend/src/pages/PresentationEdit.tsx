@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import ErrorPopup from '../components/ErrorPopup';
-import AddTextModal, { TextData } from '../components/AddTextModal';
+import AddTextModal, { type TextData } from '../components/AddTextModal';
 import EditTextModal from '../components/EditTextModal';
 import TextElementComponent from '../components/TextElement';
 import { getStore, putStore } from '../api';
@@ -119,7 +119,7 @@ const PresentationEdit = () => {
       y: 50,
       width: data.width,
       height: data.height,
-      content: data.content,
+      text: data.text,
       fontSize: data.fontSize,
       color: data.color,
       layer: currentSlide.elements.length,

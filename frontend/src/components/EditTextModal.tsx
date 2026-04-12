@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextElement } from '../types';
+import type { TextElement } from '../types';
 
 interface EditTextModalProps {
     open: boolean;
@@ -182,3 +182,5 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ open, element, onClose, o
         );
     }
 }
+
+export default EditTextModal;
