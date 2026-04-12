@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import type { TextElement } from '../types';
 
 interface EditTextModalProps {
-    open: boolean;
     element: TextElement | null;
     onClose: () => void;
-    onSave: (element: TextElement) => void;
+    onSubmit: (element: TextElement) => void;
 }
 
-const EditTextModal: React.FC<EditTextModalProps> = ({ open, element, onClose, onSave }) => {
+const EditTextModal: React.FC<EditTextModalProps> = ({ element, onClose, onSubmit }) => {
     const [text, setText] = useState<string>('');
     const [width, setWidth] = useState<number>(25);
     const [height, setHeight] = useState<number>(25);
@@ -33,7 +32,7 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ open, element, onClose, o
         e.preventDefault();
         if (!element) return;
 
-        onSave({
+        onSubmit({
             ...element,
             x,
             y,
@@ -42,10 +41,10 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ open, element, onClose, o
             text,
             fontSize,
             color,
-        })
-        onClose();
-
-        if (!open || !element) return null;
+            });
+            onClose();
+        };
+        if (!element) return null;
         return (
             <div 
                 style={{
@@ -70,6 +69,7 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ open, element, onClose, o
                         minWidth: '400px',
                         maxHeight: '80vh',
                         overflow: 'auto',
+                        color: '#000',
                     }}
                     onClick={(e) => e.stopPropagation()}
                 >
@@ -180,7 +180,6 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ open, element, onClose, o
                 </div>
             </div>
         );
-    }
-}
+};
 
 export default EditTextModal;

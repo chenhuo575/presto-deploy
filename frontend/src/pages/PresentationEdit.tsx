@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from 'react';
 import ErrorPopup from '../components/ErrorPopup';
 import AddTextModal, { type TextData } from '../components/AddTextModal';
 import EditTextModal from '../components/EditTextModal';
-import TextElementComponent from '../components/TextElement';
 import { getStore, putStore } from '../api';
 import type { Presentation, Slide, Store, TextElement, SlideElement} from '../types';
 
