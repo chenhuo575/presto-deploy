@@ -114,8 +114,8 @@ const PresentationEdit = () => {
     const newElement: TextElement = {
       id: `text-${Date.now()}`,
       type: 'text',
-      x: 50,
-      y: 50,
+      x: 0,
+      y: 0,
       width: data.width,
       height: data.height,
       text: data.text,
@@ -186,15 +186,17 @@ const PresentationEdit = () => {
       const textEl = element as TextElement;
       return (
         <div
-          key={textEl.id}
-          style={{
+                style={{
             position: 'absolute',
             left: `${textEl.x}%`,
             top: `${textEl.y}%`,
             width: `${textEl.width}%`,
             height: `${textEl.height}%`,
-            fontSize: `${textEl.fontSize}px`,
+            fontSize: `${textEl.fontSize}em`,
             color: textEl.color,
+            border: '1px solid #ccc', 
+            overflow: 'auto',
+            textAlign: 'left',
           }}
           onDoubleClick={() => setEditingElement(textEl)}
           onContextMenu={(e) => {

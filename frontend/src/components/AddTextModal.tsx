@@ -20,11 +20,12 @@ const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onSubmit }) 
   const [height, setHeight] = useState(25);
   const [fontSize, setFontSize] = useState(1);
   const [color, setColor] = useState('#000000');
+  const [error, setError] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (width < 0 || width > 100 || height < 0 || height > 100 ){
-            alert('Width and height must be between 0 and 100');
+            setError('Width and height must be between 0 and 100');
             return;
         }
 
@@ -35,6 +36,7 @@ const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onSubmit }) 
         setText('');
         setFontSize(1);
         setColor('#000000');
+        setError('');
         onClose();
     };
 
@@ -66,6 +68,23 @@ const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onSubmit }) 
                 onClick={(e) => e.stopPropagation()}
             >
                 <h2>Add Text box</h2>
+                {error && (
+                    <div style={{ 
+                        color: 'red', 
+                        marginBottom: '16px',
+                        padding: '8px',
+                        backgroundColor: '#ffe6e6',
+                        borderRadius: '4px',
+                    }}>
+                        {error}
+                        <button 
+                        onClick={() => setError('')}
+                        style={{ marginLeft: '8px', cursor: 'pointer' }}
+                        >
+                        ✕
+                        </button>
+                    </div>
+                    )}
                 <form onSubmit={handleSubmit}>
                     <div style={{ marginBottom: '16px' }}>
                         <label>      

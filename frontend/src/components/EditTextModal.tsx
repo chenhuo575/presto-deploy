@@ -28,7 +28,7 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ element, onClose, onSubmi
         }
     }, [element]);
 
-    const hadleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!element) return;
 
@@ -74,7 +74,7 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ element, onClose, onSubmi
                     onClick={(e) => e.stopPropagation()}
                 >
                     <h2>Edit Text Element</h2>
-                    <form onSubmit={hadleSubmit}>
+                    <form onSubmit={handleSubmit}>
                         <div style={{ marginBottom: '16px' }}>
                             <label>
                                 Position X (%):
