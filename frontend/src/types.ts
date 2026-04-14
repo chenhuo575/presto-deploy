@@ -28,4 +28,16 @@ export interface TextElement {
   layer: number;
 }
 
-export type SlideElement = TextElement;
+export interface ImageElement {
+  id: string;
+  type: 'image';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  src: string;
+  alt: string;
+  layer: number;
+}
+
+export type SlideElement = TextElement | ImageElement;
