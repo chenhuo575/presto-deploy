@@ -2,7 +2,7 @@ import React, { useEffect, useState} from 'react';
 import type { ImageElement } from '../types';
 
 interface AddImageModalProps {
-    element: ImageElement | null;
+    open: boolean;
     onClose: () => void;
     onSubmit: (data: ImageData) => void;
 }

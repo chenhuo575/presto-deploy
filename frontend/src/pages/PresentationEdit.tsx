@@ -21,7 +21,7 @@ const PresentationEdit = () => {
   const [showAddTextModal, setShowAddTextModal] = useState(false);
   const [editingElement, setEditingElement] = useState<TextElement | null>(null);
   const [showAddImageModal, setShowAddImageModal] = useState(false);
-  const [editingImageElement, setEditingImageElement] = useState<ImageData | null>(null);
+  const [editingImageElement, setEditingImageElement] = useState<ImageElement | null>(null);
 
   const fetchPresentation = useCallback(async () => {
     try {
@@ -290,6 +290,7 @@ const PresentationEdit = () => {
         <button onClick={handleAddSlide}>+ New Slide</button>
         <button onClick={handleDeleteSlide}>🗑️ Delete Slide</button>
         <button onClick={() => setShowAddTextModal(true)}>+ Add Text</button>
+        <button onClick={() => setShowAddImageModal(true)}>+ Add Image</button>
       </div>
 
       <div
@@ -422,6 +423,16 @@ const PresentationEdit = () => {
       <EditTextModal
         element={editingElement}
         onClose={() => setEditingElement(null)}
+        onSubmit={handleUpdateElement}
+      />
+      <AddImageModal
+        open={showAddImageModal}
+        onClose={() => setShowAddImageModal(false)}
+        onSubmit={handleAddImage}
+      />
+      <EditImageModal
+        element={editingImageElement}
+        onClose={() => setEditingImageElement(null)}
         onSubmit={handleUpdateElement}
       />
       <ErrorPopup message={error} onClose={() => setError('')} />
