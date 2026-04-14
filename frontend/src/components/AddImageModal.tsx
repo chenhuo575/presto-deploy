@@ -15,7 +15,7 @@ export interface ImageData{
 }
 
 
-const AddTextModal: React.FC<AddImageModalProps> = ({ open, onClose, onSubmit }) => {
+const AddImageModal: React.FC<AddImageModalProps> = ({ open, onClose, onSubmit }) => {
     const [url, setUrl] = useState('');
     const [width, setWidth] = useState(25);
     const [height, setHeight] = useState(25);
@@ -88,4 +88,4 @@ const AddTextModal: React.FC<AddImageModalProps> = ({ open, onClose, onSubmit })
     )
 }
 
-export default AddTextModal;
+export default AddImageModal;
