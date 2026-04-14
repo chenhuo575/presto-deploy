@@ -3,8 +3,10 @@ import { useState, useEffect, useCallback } from 'react';
 import ErrorPopup from '../components/ErrorPopup';
 import AddTextModal, { type TextData } from '../components/AddTextModal';
 import EditTextModal from '../components/EditTextModal';
+import AddImageModal, { type ImageData } from '../components/AddImageModal';
+import EditImageModal from '../components/EditImageModal';
 import { getStore, putStore } from '../api';
-import type { Presentation, Slide, Store, TextElement, SlideElement} from '../types';
+import type { Presentation, Slide, Store, TextElement, SlideElement, ImageElement} from '../types';
 
 const PresentationEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,7 +20,8 @@ const PresentationEdit = () => {
   const [showEditThumbnail, setShowEditThumbnail] = useState(false);
   const [showAddTextModal, setShowAddTextModal] = useState(false);
   const [editingElement, setEditingElement] = useState<TextElement | null>(null);
-
+  const [showAddImageModal, setShowAddImageModal] = useState(false);
+  const [editingImageElement, setEditingImageElement] = useState<ImageData | null>(null);
 
   const fetchPresentation = useCallback(async () => {
     try {
@@ -131,6 +134,28 @@ const PresentationEdit = () => {
     await savePresentation({ ...presentation, slides: updatedSlide });  
   };
 
+  const handleAddImage = async (data: ImageData) => {
+    if (!presentation) return;
+    const currentSlide = presentation.slides[currentSlideIndex];
+    const newElement: ImageElement = {
+      id: `image-${Date.now()}`,
+      type: 'image',
+      x: 0,
+      y: 0,
+      width: data.width,
+      height: data.height,
+      src: data.src,
+      alt: data.alt,
+      layer: currentSlide.elements.length,
+    };
+    const updatedSlide = presentation.slides.map((slide, i) =>
+      i === currentSlideIndex
+        ? { ...slide, elements: [...slide.elements, newElement] }
+        : slide
+    );
+    await savePresentation({ ...presentation, slides: updatedSlide });
+  };
+
   const handleUpdateElement = async (updatedElement: SlideElement) => {
     if (!presentation) return;
     const updatedSlide = presentation.slides.map((slide, i) => i === currentSlideIndex
@@ -208,6 +233,41 @@ const PresentationEdit = () => {
         </div>
       );
     }
+    if (element.type === 'image') {
+      const imgEl = element as ImageElement;
+      return (
+        <div
+          key={imgEl.id}
+          style={{
+            position: 'absolute',
+            left: `${imgEl.x}%`,
+            top: `${imgEl.y}%`,
+            width: `${imgEl.width}%`,
+            height: `${imgEl.height}%`,
+            border: '1px solid #ccc',
+            overflow: 'hidden',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onDoubleClick={() => setEditingImageElement(imgEl)}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            handleDeleteElement(imgEl.id);
+          }}
+          >
+            <img
+              src={imgEl.src}
+              alt={imgEl.alt}
+              style={{
+                maxWidth: '100%',
+                maxHeight: '100%',
+                objectFit: 'contain',
+              }}
+            />
+          </div>
+        );
+      }
     return null;
   };
 
