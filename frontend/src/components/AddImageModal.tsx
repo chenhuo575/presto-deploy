@@ -11,44 +11,40 @@ export interface ImageData{
     width: number;
     height: number;
     alt: string;
-    url: string;
+    src: string;
 }
 
 
-const AddTextModal: React.FC<AddImageModalProps> = ({ element, onClose, onSubmit }) => {
+const AddTextModal: React.FC<AddImageModalProps> = ({ open, onClose, onSubmit }) => {
     const [url, setUrl] = useState('');
     const [width, setWidth] = useState(25);
     const [height, setHeight] = useState(25);
     const [alt, setAlt] = useState('');
-    const [error, setError] = useState('');
-    const [src, setSrc] = useState('');
     const [useFile, setUseFile] = useState(false);
-    const [x, setX] = useState(0);
-    const [y, setY] = useState(0);
 
-    useEffect(() => {
-        if (element) {
-            setWidth(element.width);
-            setHeight(element.height);
-            setAlt(element.alt);
-            setUrl(element.src);
-            setX(element.x);
-            setY(element.y);
-            setSrc(element.src);
-        }
-    }, [element]);
+    if (!open) return null;
 
-    if (!element) return null;
-
-    const handleFileChange=(e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = () => {
-            setSrc(reader.result as string);
+        reader.onloadend = () => {
+            setUrl(reader.result as string);
         };
         reader.readAsDataURL(file);
     };
+
+    const handleSubmit = () => {
+        if(!url.trim()) return;
+        onSubmit({ width, height, alt, src:url });
+        setUrl('');
+        setWidth(25);
+        setHeight(25);
+        setAlt('');
+        setUseFile(false);
+        onClose();
+    }
+
 }
 
 export default AddTextModal;
