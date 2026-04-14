@@ -80,15 +80,14 @@ const EditImageModal: React.FC<EditImageModalProps> = ({ element, onClose, onSub
                         <input type="text" value={src} onChange={(e) => setSrc(e.target.value)} style={{width:'100%',padding:'6px', marginBottom:'8px'}} />
                     </>
                 )}
-            </div>
-            <label>Alt Text</label>
-            <input type="text" value={alt} onChange={(e) => setAlt(e.target.value)} style={{width:'100%',padding:'6px', marginBottom:'12px'}} />
-            <div style={{display:'flex', gap:'8px',justifyContent:'flex-end'}}>
-                <button onClick={onClose}>Cancel</button>
-                <button onClick={handleSubmit}>Save</button>
+                <label>Alt Text</label>
+                <input type="text" value={alt} onChange={(e) => setAlt(e.target.value)} style={{width:'100%',padding:'6px', marginBottom:'12px'}} />
+                <div style={{display:'flex', gap:'8px',justifyContent:'flex-end'}}>
+                    <button onClick={onClose}>Cancel</button>
+                    <button onClick={handleSubmit}>Save</button>
+                </div>
             </div>
         </div>
-
     );
 };
 
