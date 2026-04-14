@@ -52,5 +52,44 @@ const EditImageModal: React.FC<EditImageModalProps> = ({ element, onClose, onSub
             src,
         });
         onClose();
-    }
-}
+    };
+
+    return (
+        <div style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000}}>
+            <div style={{background:'white', padding: '24px', borderRadius: '8px', minWidth: '350px',color:'#000'   }}>
+                <h3>Edit Image</h3>
+                <label>Width (%)</label>
+                <input type="number" min={1} max={100} value={width} onChange={(e) => setWidth(Number(e.target.value))} style={{width:'100%',padding:'6px', marginBottom:'8px'}} />
+                <label>Height (%)</label>
+                <input type="number" min={1} max={100} value={height} onChange={(e) => setHeight(Number(e.target.value))} style={{width:'100%',padding:'6px', marginBottom:'8px'}} />
+                <label>Position X (%)</label>
+                <input type="number" min={0} max={100} value={x} onChange={(e) => setX(Number(e.target.value))} style={{width:'100%',padding:'6px', marginBottom:'8px'}} />
+                <label>Position Y (%)</label>
+                <input type="number" min={0} max={100} value={y} onChange={(e) => setY(Number(e.target.value))} style={{width:'100%',padding:'6px', marginBottom:'8px'}} />
+                <div style={{marginBottom:'8px'}}>
+                    <label>
+                        <input type="checkbox" checked={useFile} onChange={(e) => setUseFile(e.target.checked)} />
+                        {' '}Upload from file
+                    </label>
+                </div>
+                {useFile ? (
+                    <input type="file" accept="image/*" onChange={handleFileChange} style={{display:'block', marginBottom:'8px'}} />
+                ) : (
+                    <>
+                        <label>Image URL</label>
+                        <input type="text" value={src} onChange={(e) => setSrc(e.target.value)} style={{width:'100%',padding:'6px', marginBottom:'8px'}} />
+                    </>
+                )}
+            </div>
+            <label>Alt Text</label>
+            <input type="text" value={alt} onChange={(e) => setAlt(e.target.value)} style={{width:'100%',padding:'6px', marginBottom:'12px'}} />
+            <div style={{display:'flex', gap:'8px',justifyContent:'flex-end'}}>
+                <button onClick={onClose}>Cancel</button>
+                <button onClick={handleSubmit}>Save</button>
+            </div>
+        </div>
+
+    );
+};
+
+export default EditImageModal;
