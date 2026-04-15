@@ -40,4 +40,16 @@ export interface ImageElement {
   layer: number;
 }
 
-export type SlideElement = TextElement | ImageElement;
+export interface VideoElement{
+  id: string;
+  type: 'video';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  url: string;
+  autoPlay: boolean;
+  layer: number;
+}
+
+export type SlideElement = TextElement | ImageElement | VideoElement;
