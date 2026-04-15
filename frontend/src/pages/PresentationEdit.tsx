@@ -5,8 +5,11 @@ import AddTextModal, { type TextData } from '../components/AddTextModal';
 import EditTextModal from '../components/EditTextModal';
 import AddImageModal, { type ImageData } from '../components/AddImageModal';
 import EditImageModal from '../components/EditImageModal';
+import AddVideoModal, { type VideoData } from '../components/AddVideoModal';
+import EditVideoModal from '../components/EditVideoModal';
+import type { VideoElement } from '../types';
 import { getStore, putStore } from '../api';
-import type { Presentation, Slide, Store, TextElement, SlideElement, ImageElement} from '../types';
+import type { Presentation, Slide, Store, TextElement, SlideElement, ImageElement } from '../types';
 
 const PresentationEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +25,8 @@ const PresentationEdit = () => {
   const [editingElement, setEditingElement] = useState<TextElement | null>(null);
   const [showAddImageModal, setShowAddImageModal] = useState(false);
   const [editingImageElement, setEditingImageElement] = useState<ImageElement | null>(null);
+  const [showAddVideoModal, setShowAddVideoModal] = useState(false);
+  const [editingVideoElement, setEditingVideoElement] = useState<VideoElement | null>(null);
 
   const fetchPresentation = useCallback(async () => {
     try {
@@ -156,6 +161,28 @@ const PresentationEdit = () => {
     await savePresentation({ ...presentation, slides: updatedSlide });
   };
 
+  const handleAddVideo = async (data: VideoData) => {
+    if (!presentation) return;
+    const currentSlide = presentation.slides[currentSlideIndex];
+    const newElement: VideoElement = {
+      id: `video-${Date.now()}`,
+      type: 'video',
+      x: 0,
+      y: 0,
+      width: data.width,
+      height: data.height,
+      url: data.url,
+      autoPlay: data.autoPlay,
+      layer: currentSlide.elements.length,
+    };
+    const updatedSlide = presentation.slides.map((slide, i) =>
+      i === currentSlideIndex
+        ? { ...slide, elements: [...slide.elements, newElement] }
+        : slide
+    );
+    await savePresentation({ ...presentation, slides: updatedSlide });
+  };
+
   const handleUpdateElement = async (updatedElement: SlideElement) => {
     if (!presentation) return;
     const updatedSlide = presentation.slides.map((slide, i) => i === currentSlideIndex
@@ -268,6 +295,40 @@ const PresentationEdit = () => {
           </div>
         );
       }
+      if (element.type === 'video') {
+        const videoEl = element as VideoElement;
+        const videoSrc = videoEl.autoPlay 
+          ? `${videoEl.url}${videoEl.url.includes('?') ? '&' : '?'}autoplay=1&mute=1`
+          : videoEl.url;
+        return (
+          <div
+            key={videoEl.id}
+            style={{
+              position: 'absolute',
+              left: `${videoEl.x}%`,
+              top: `${videoEl.y}%`,
+              width: `${videoEl.width}%`,
+              height: `${videoEl.height}%`,
+              border: '1px solid #ccc',
+              overflow: 'hidden',
+            }}
+            onDoubleClick={() => setEditingVideoElement(videoEl)}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              handleDeleteElement(videoEl.id);
+            }}
+          >
+            <iframe
+              src={videoSrc}
+              width="100%"
+              height="100%"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ border: 'none' }}
+            />
+          </div>
+      );
+    }
     return null;
   };
 
@@ -291,6 +352,7 @@ const PresentationEdit = () => {
         <button onClick={handleDeleteSlide}>🗑️ Delete Slide</button>
         <button onClick={() => setShowAddTextModal(true)}>+ Add Text</button>
         <button onClick={() => setShowAddImageModal(true)}>+ Add Image</button>
+        <button onClick={() => setShowAddVideoModal(true)}>+ Add Video</button>
       </div>
 
       <div
@@ -433,6 +495,16 @@ const PresentationEdit = () => {
       <EditImageModal
         element={editingImageElement}
         onClose={() => setEditingImageElement(null)}
+        onSubmit={handleUpdateElement}
+      />
+      <AddVideoModal
+        open={showAddVideoModal}
+        onClose={() => setShowAddVideoModal(false)}
+        onSubmit={handleAddVideo}
+      />
+      <EditVideoModal
+        element={editingVideoElement}
+        onClose={() => setEditingVideoElement(null)}
         onSubmit={handleUpdateElement}
       />
       <ErrorPopup message={error} onClose={() => setError('')} />
