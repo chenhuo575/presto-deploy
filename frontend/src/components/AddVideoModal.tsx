@@ -16,8 +16,8 @@ interface AddVideoModalProps {
 const AddVideoModal = ({ open, onClose, onSubmit }: AddVideoModalProps) => {
     const [url, setUrl] = useState('');
     const [autoPlay, setAutoPlay] = useState(false);
-    const [width, setWidth] = useState(300);
-    const [height, setHeight] = useState(200);
+    const [width, setWidth] = useState(50);
+    const [height, setHeight] = useState(50);
 
     if (!open) return null;
 

@@ -111,6 +111,16 @@ const EditVideoModal= ({ element, onClose, onSubmit }: EditVideoModalProps) => {
                         style={{ width: '100%', padding: '8px' }}
                     />
                 </div>
+                <div style={{ marginBottom: '12px' }}>
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={autoPlay}
+                            onChange={(e) => setAutoPlay(e.target.checked)}
+                        />
+                        {' '}Auto Play
+                    </label>
+                </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
                     <button onClick={onClose}>Cancel</button>
                     <button onClick={handleSubmit}>Save</button>
