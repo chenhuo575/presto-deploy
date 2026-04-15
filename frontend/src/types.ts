@@ -52,4 +52,16 @@ export interface VideoElement{
   layer: number;
 }
 
-export type SlideElement = TextElement | ImageElement | VideoElement;
+export interface CodeElement {
+  id: string;
+  type: 'code';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  code: string;
+  fontSize: number;
+  layer: number;
+}
+
+export type SlideElement = TextElement | ImageElement | VideoElement | CodeElement;
