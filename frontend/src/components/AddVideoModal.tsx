@@ -97,4 +97,5 @@ const AddVideoModal = ({ open, onClose, onSubmit }: AddVideoModalProps) => {
         </div>
     );
 }
+
 export default AddVideoModal;
