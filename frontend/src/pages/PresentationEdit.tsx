@@ -7,13 +7,14 @@ import AddImageModal, { type ImageData } from '../components/AddImageModal';
 import EditImageModal from '../components/EditImageModal';
 import AddVideoModal, { type VideoData } from '../components/AddVideoModal';
 import EditVideoModal from '../components/EditVideoModal';
-import type { VideoElement, CodeElement } from '../types';
+import type { VideoElement, CodeElement, SlideBackground } from '../types';
 import { getStore, putStore } from '../api';
 import type { Presentation, Slide, Store, TextElement, SlideElement, ImageElement } from '../types';
 import AddCodeModal from '../components/AddCodeModal';
 import EditCodeModal from '../components/EditCodeModal';
 import CodeBlock from '../components/CodeBlock';
 import type { CodeData } from '../components/AddCodeModal';
+import BackgroundModal from '../components/BackgroundModal';
 
 const PresentationEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,6 +34,8 @@ const PresentationEdit = () => {
   const [editingVideoElement, setEditingVideoElement] = useState<VideoElement | null>(null);
   const [showAddCodeModal, setShowAddCodeModal] = useState(false);
   const [editingCodeElement, setEditingCodeElement] = useState<CodeElement | null>(null);
+  const [showBackgroundModal, setShowBackgroundModal] = useState(false);
+  const [defaultBackground, setDefaultBackground] = useState<SlideBackground | undefined>(undefined);
 
 
   const fetchPresentation = useCallback(async () => {
@@ -237,6 +240,22 @@ const PresentationEdit = () => {
     await savePresentation({ ...presentation, slides: updatedSlide });
   };
 
+  const handleApplySlideBackground = async (bg: SlideBackground | undefined) => {
+    if (!presentation) return;
+    const updatedSlide = presentation.slides.map((slide, i) => i === currentSlideIndex
+      ? {
+          ...slide,
+          background: bg,
+        }
+      : slide
+    );
+    await savePresentation({ ...presentation, slides: updatedSlide });
+  };
+
+  const handleApplyDefaultBackground = async (bg: SlideBackground) => {
+    if (!presentation) return;
+    await savePresentation({ ...presentation, defaultBackground: bg });
+  }
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!presentation) return;
@@ -399,6 +418,7 @@ const PresentationEdit = () => {
         <button onClick={() => setShowAddImageModal(true)}>+ Add Image</button>
         <button onClick={() => setShowAddVideoModal(true)}>+ Add Video</button>
         <button onClick={() => setShowAddCodeModal(true)}>+ Add Code</button>
+        <button onClick={() => setShowBackgroundModal(true)}>🎨 Background</button>
       </div>
 
       <div
@@ -409,8 +429,15 @@ const PresentationEdit = () => {
           aspectRatio: '2 / 1',
           border: '2px solid #555',
           borderRadius: '8px',
-          backgroundColor: '#fff',
           overflow: 'hidden',
+          ...(() => {
+            const bg = currentSlide?.background ?? presentation.defaultBackground;
+            if (!bg) return { backgroundColor: '#fff' };
+            if (bg.type === 'solid') return { backgroundColor: bg.color ?? '#fff' };
+            if (bg.type === 'gradient') return { background: `linear-gradient(to right, ${bg.gradientStart ?? '#fff'}, ${bg.gradientEnd ?? '#000'})` };
+            if (bg.type === 'image') return { backgroundImage: `url(${bg.image})`, backgroundSize: 'cover', backgroundPosition: 'center' };
+            return { backgroundColor: '#fff' };
+          })(),
         }}
       >
         {currentSlide?.elements.slice().sort((a, b) => a.layer - b.layer).map(renderElements)}
@@ -562,6 +589,14 @@ const PresentationEdit = () => {
         element={editingCodeElement}
         onClose={() => setEditingCodeElement(null)}
         onSubmit={handleUpdateElement}
+      />
+      <BackgroundModal
+        open={showBackgroundModal}
+        onClose={() => setShowBackgroundModal(false)}
+        currentSlideBackground={currentSlide?.background}
+        defaultBackground={presentation.defaultBackground}
+        onApplyToSlide={handleApplySlideBackground}
+        onApplyDefault={handleApplyDefaultBackground}
       />
       <ErrorPopup message={error} onClose={() => setError('')} />
     </div>

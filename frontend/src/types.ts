@@ -1,6 +1,7 @@
 export interface Slide {
   id: string;
   elements: SlideElement[];
+  background?: SlideBackground;
 }
 
 export interface SlideBackground{

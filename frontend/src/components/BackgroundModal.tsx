@@ -137,7 +137,7 @@ const BackgroundModal = ({ open, onClose, currentSlideBackground, defaultBackgro
                     <button onClick={() => setTab('default')} style={{ fontWeight: tab === 'default' ? 'bold' : 'normal' }}>Default Background</button>
                 </div>
             
-            {tab === 'slide' ? (
+            {tab === 'slide' && (
                 <>
                     <div style={{ marginBottom: '12px' }}>
                         <label>
