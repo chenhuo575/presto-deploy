@@ -15,6 +15,7 @@ import EditCodeModal from '../components/EditCodeModal';
 import CodeBlock from '../components/CodeBlock';
 import type { CodeData } from '../components/AddCodeModal';
 import BackgroundModal from '../components/BackgroundModal';
+import SlideControlPanel from '../components/SlideControlPanel';
 
 const PresentationEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,7 +37,7 @@ const PresentationEdit = () => {
   const [editingCodeElement, setEditingCodeElement] = useState<CodeElement | null>(null);
   const [showBackgroundModal, setShowBackgroundModal] = useState(false);
   const [defaultBackground, setDefaultBackground] = useState<SlideBackground | undefined>(undefined);
-
+  const [showSlideControlPanel, setShowSlideControlPanel] = useState(false);
 
   const fetchPresentation = useCallback(async () => {
     try {
@@ -419,6 +420,7 @@ const PresentationEdit = () => {
         <button onClick={() => setShowAddVideoModal(true)}>+ Add Video</button>
         <button onClick={() => setShowAddCodeModal(true)}>+ Add Code</button>
         <button onClick={() => setShowBackgroundModal(true)}>🎨 Background</button>
+        <button onClick={() => setShowSlideControlPanel(true)}>Slide Overview</button>
       </div>
 
       <div
@@ -550,6 +552,8 @@ const PresentationEdit = () => {
           </div>
         </div>
       )}
+
+
       <AddTextModal
         open={showAddTextModal}
         onClose={() => setShowAddTextModal(false)}
@@ -598,6 +602,14 @@ const PresentationEdit = () => {
         onApplyToSlide={handleApplySlideBackground}
         onApplyDefault={handleApplyDefaultBackground}
       />
+      {showSlideControlPanel && (
+        <SlideControlPanel
+          slides={presentation.slides}
+          currentSlideIndex={currentSlideIndex}
+          onSelectSlide={(index: number) => setCurrentSlideIndex(index)}
+          onClose={() => setShowSlideControlPanel(false)}
+        />
+      )}
       <ErrorPopup message={error} onClose={() => setError('')} />
     </div>
   );
