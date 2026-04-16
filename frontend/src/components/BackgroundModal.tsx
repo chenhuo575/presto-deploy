@@ -128,4 +128,42 @@ const BackgroundModal = ({ open, onClose, currentSlideBackground, defaultBackgro
         onClose();
     };
 
-}
+    return (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+            <div style={{ background: 'white', padding: '24px', borderRadius: '8px', color: '#000', minWidth: '400px', maxHeight: '80vh', overflow: 'auto' }}>
+                <h3>Theme & Background</h3>
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+                    <button onClick={() => setTab('slide')} style={{ fontWeight: tab === 'slide' ? 'bold' : 'normal' }}>Current Slide</button>
+                    <button onClick={() => setTab('default')} style={{ fontWeight: tab === 'default' ? 'bold' : 'normal' }}>Default Background</button>
+                </div>
+            
+            {tab === 'slide' ? (
+                <>
+                    <div style={{ marginBottom: '12px' }}>
+                        <label>
+                            <input type="checkbox" checked={slideHasCustom} onChange={(e) => setSlideHasCustom(e.target.checked)} />
+                            {' '}Override default for this slide
+                        </label>
+                    </div>
+                    {slideHasCustom && renderFields(slideType, setSlideType, slideColor, setSlideColor, slideGradStart, setSlideGradStart, slideGradEnd, setSlideGradEnd, slideImage, setSlideImage)}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                    <button onClick={onClose}>Cancel</button>
+                    <button onClick={handleSaveSlide}>Apply to Slide</button>
+                    </div>
+                </>
+            )}
+            {tab === 'default' && (
+                <>
+                    {renderFields(defType, setDefType, defColor, setDefColor, defGradStart, setDefGradStart, defGradEnd, setDefGradEnd, defImage, setDefImage)}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                        <button onClick={onClose}>Cancel</button>
+                        <button onClick={handleSaveDefault}>Apply to Default</button>
+                    </div>
+                </>
+            )}
+            </div>
+        </div>
+    );
+};
+
+export default BackgroundModal;
