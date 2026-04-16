@@ -7,14 +7,17 @@ interface EditTextModalProps {
     onSubmit: (element: TextElement) => void;
 }
 
+const FONT_OPTIONS = ['Arial', 'Times New Roman', 'Courier New'];
+
 const EditTextModal: React.FC<EditTextModalProps> = ({ element, onClose, onSubmit }) => {
-    const [text, setText] = useState<string>('');
-    const [width, setWidth] = useState<number>(25);
-    const [height, setHeight] = useState<number>(25);
-    const [fontSize, setFontSize] = useState<number>(1);
-    const [color, setColor] = useState<string>('#000000');
-    const [x, setX] = useState<number>(0);
-    const [y, setY] = useState<number>(0);
+    const [text, setText] = useState('');
+    const [width, setWidth] = useState(25);
+    const [height, setHeight] = useState(25);
+    const [fontFamily, setFontFamily] = useState('Arial');
+    const [fontSize, setFontSize] = useState(1);
+    const [color, setColor] = useState('#000000');
+    const [x, setX] = useState(0);
+    const [y, setY] = useState(0);
 
     useEffect(() => {
         if (element) {
@@ -23,6 +26,7 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ element, onClose, onSubmi
             setHeight(element.height);
             setFontSize(element.fontSize);
             setColor(element.color);
+            setFontFamily(element.fontFamily || 'Arial');
             setX(element.x);
             setY(element.y);
         }
@@ -41,6 +45,7 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ element, onClose, onSubmi
             text,
             fontSize,
             color,
+            fontFamily,
             });
             onClose();
         };
@@ -170,6 +175,20 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ element, onClose, onSubmi
                                     onChange={(e) => setColor(e.target.value)}
                                     style={{ marginLeft: '8px', width: '100px' }}
                                 />
+                            </label>
+                        </div>
+                        <div style={{ marginBottom: '16px' }}>
+                            <label>
+                                Font Family:
+                                <select
+                                    value={fontFamily}
+                                    onChange={(e) => setFontFamily(e.target.value)}
+                                    style={{ marginLeft: '8px' }}
+                                >
+                                    {FONT_OPTIONS.map((f) => (
+                                        <option key={f} value={f}>{f}</option>
+                                    ))}
+                                </select>
                             </label>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'flex-end' ,gap: '8px'}}>

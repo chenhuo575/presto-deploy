@@ -135,6 +135,7 @@ const PresentationEdit = () => {
       height: data.height,
       text: data.text,
       fontSize: data.fontSize,
+      fontFamily: data.fontFamily,
       color: data.color,
       layer: currentSlide.elements.length,
     };
@@ -274,6 +275,7 @@ const PresentationEdit = () => {
             width: `${textEl.width}%`,
             height: `${textEl.height}%`,
             fontSize: `${textEl.fontSize}em`,
+            fontFamily: textEl.fontFamily || 'Arial',
             color: textEl.color,
             border: '1px solid #ccc', 
             overflow: 'auto',

@@ -24,6 +24,7 @@ export interface TextElement {
   height: number;
   text: string;
   fontSize: number;
+  fontFamily: string;
   color: string;
   layer: number;
 }

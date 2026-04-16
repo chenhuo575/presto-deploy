@@ -12,15 +12,19 @@ export interface TextData{
     text: string;
     fontSize: number;
     color: string;
+    fontFamily: string;
 }
 
+const FONT_OPTIONS = ['Arial', 'Times New Roman', 'Courier New'];
+
 const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onSubmit }) => {
-  const [text, setText] = useState('');
-  const [width, setWidth] = useState(25);
-  const [height, setHeight] = useState(25);
-  const [fontSize, setFontSize] = useState(1);
-  const [color, setColor] = useState('#000000');
-  const [error, setError] = useState('');
+    const [text, setText] = useState('');
+    const [width, setWidth] = useState(25);
+    const [height, setHeight] = useState(25);
+    const [fontSize, setFontSize] = useState(1);
+    const [color, setColor] = useState('#000000');
+    const [fontFamily, setFontFamily] = useState('Arial');
+    const [error, setError] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,13 +33,13 @@ const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onSubmit }) 
             return;
         }
 
-    onSubmit({ width, height, text, fontSize, color });
-
+    onSubmit({ width, height, text, fontSize, color, fontFamily });
         setWidth(25);
         setHeight(25);
         setText('');
         setFontSize(1);
         setColor('#000000');
+        setFontFamily('Arial');
         setError('');
         onClose();
     };
@@ -150,7 +154,20 @@ const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onSubmit }) 
                                 style={{ marginLeft: '8px', width:'100px' }}/>
                         </label>
                     </div>
-
+                    <div style={{ marginBottom: '16px' }}>
+                        <label>
+                            Font Family:
+                            <select
+                                value={fontFamily}
+                                onChange={(e) => setFontFamily(e.target.value)}
+                                style={{ marginLeft: '8px' }}
+                            >
+                                {FONT_OPTIONS.map((f) => (
+                                    <option key={f} value={f}>{f}</option>
+                                ))}
+                            </select>
+                        </label>
+                    </div>
                     <div style={{
                         display: 'flex',
                         gap: '8px',
