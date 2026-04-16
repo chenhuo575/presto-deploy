@@ -3,11 +3,20 @@ export interface Slide {
   elements: SlideElement[];
 }
 
+export interface SlideBackground{
+  type: 'solid' | 'gradient' | 'image';
+  color?: string;
+  gradientStart?: string;
+  gradientEnd?: string;
+  image?: string;
+}
+
 export interface Presentation {
   id: string;
   name: string;
   description: string;
   thumbnail: string;
+  defaultBackground?: SlideBackground;
   slides: Slide[];
 }
 
