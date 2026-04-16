@@ -205,7 +205,7 @@ const PresentationEdit = () => {
       width: data.width,
       height: data.height,
       code: data.code,
-      fontSize: data.fontSize,
+      fontSize: data.fontsize,
       layer: currentSlide.elements.length,
     };
     const updatedSlide = presentation.slides.map((slide, i) =>
