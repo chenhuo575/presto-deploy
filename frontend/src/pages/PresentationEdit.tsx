@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import ErrorPopup from '../components/ErrorPopup';
 import AddTextModal, { type TextData } from '../components/AddTextModal';
@@ -22,7 +22,12 @@ const PresentationEdit = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [presentation, setPresentation] = useState<Presentation | null>(null);
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentSlideIndex = parseInt(searchParams.get('slide') || '0', 10);
+  const setCurrentSlideIndex = (val: number | ((prev: number) => number)) => {
+    const newVal = typeof val === 'function' ? val(currentSlideIndex) : val;
+    setSearchParams({ slide: String(newVal) }, { replace: true });
+  };
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showEditTitle, setShowEditTitle] = useState(false);
   const [editTitleValue, setEditTitleValue] = useState('');
@@ -421,6 +426,9 @@ const PresentationEdit = () => {
         <button onClick={() => setShowAddCodeModal(true)}>+ Add Code</button>
         <button onClick={() => setShowBackgroundModal(true)}>🎨 Background</button>
         <button onClick={() => setShowSlideControlPanel(true)}>Slide Overview</button>
+        <button onClick={() => window.open(`/preview/${id}?slide=${currentSlideIndex}`, '_blank')}>
+          ▶ Preview
+        </button>
       </div>
 
       <div

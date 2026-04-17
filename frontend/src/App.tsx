@@ -16,7 +16,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/presentation/:id" element={<PresentationEdit />} />
-        <Route path="/preview/:id/preview" element={<PreviewPage />} />
+        <Route path="/preview/:id" element={<PreviewPage />} />
       </Routes>
     </BrowserRouter>
   );
