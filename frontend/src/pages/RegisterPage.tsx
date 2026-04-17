@@ -33,7 +33,7 @@ const RegisterPage = () => {
         localStorage.setItem('token', data.token);
         navigate('/dashboard');
       }
-    } catch (err) {
+    } catch (_err) {
       setError('An unexpected error occurred. Please try again.');
     }
   };
