@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import python from 'highlight.js/lib/languages/python';
@@ -14,7 +14,7 @@ hljs.registerLanguage('c', c);
 interface CodeBlockProps {
     element: CodeElement;
     onDoubleClick: () => void;
-    onContextMenu: (e: React.MouseEvent) => void;
+    onContextMenu: (_e: React.MouseEvent) => void;
 }
 
 const CodeBlock = ({ element, onDoubleClick, onContextMenu }: CodeBlockProps) => {

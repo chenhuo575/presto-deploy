@@ -10,7 +10,7 @@ export interface VideoData {
 interface AddVideoModalProps {
     open: boolean;
     onClose: () => void;
-    onSubmit: (data: VideoData) => void;
+    onSubmit: (_data: VideoData) => void;
 }
 
 const AddVideoModal = ({ open, onClose, onSubmit }: AddVideoModalProps) => {

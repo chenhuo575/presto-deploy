@@ -3,7 +3,7 @@ import React from 'react';
 interface SlideControlPanelProps {
     slides: Array<unknown>;
     currentSlideIndex: number;
-    onSelectSlide: (index: number) => void;
+    onSelectSlide: (_index: number) => void;
     onClose: () => void;
 }
 

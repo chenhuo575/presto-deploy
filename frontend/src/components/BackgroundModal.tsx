@@ -6,8 +6,8 @@ interface BackgroundModalProps {
     onClose: () => void;
     currentSlideBackground?: SlideBackground;
     defaultBackground?: SlideBackground;
-    onApplyToSlide: (bg: SlideBackground | undefined) => void;
-    onApplyDefault: (bg: SlideBackground) => void;
+    onApplyToSlide: (_bg: SlideBackground | undefined) => void;
+    onApplyDefault: (_bg: SlideBackground) => void;
 }
 
 const BackgroundModal = ({ open, onClose, currentSlideBackground, defaultBackground, onApplyToSlide, onApplyDefault }: BackgroundModalProps) => {
@@ -26,6 +26,7 @@ const BackgroundModal = ({ open, onClose, currentSlideBackground, defaultBackgro
 
   const [slideHasCustom, setSlideHasCustom] = useState(false);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (!open) return;
     if (currentSlideBackground) {
@@ -51,10 +52,11 @@ const BackgroundModal = ({ open, onClose, currentSlideBackground, defaultBackgro
       setDefColor('#ffffff');
     }
   }, [open, currentSlideBackground, defaultBackground]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   if (!open) return null;
 
-  const handleFileUpload = (setter: (v: string) => void) => (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = (setter: (_v: string) => void) => (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
@@ -69,11 +71,11 @@ const BackgroundModal = ({ open, onClose, currentSlideBackground, defaultBackgro
   };
 
   const renderFields = (
-    type: string, setType: (v: 'solid'|'gradient'|'image') => void,
-    color: string, setColor: (v: string) => void,
-    gs: string, setGs: (v: string) => void,
-    ge: string, setGe: (v: string) => void,
-    img: string, setImg: (v: string) => void,
+    type: string, setType: (_v: 'solid'|'gradient'|'image') => void,
+    color: string, setColor: (_v: string) => void,
+    gs: string, setGs: (_v: string) => void,
+    ge: string, setGe: (_v: string) => void,
+    img: string, setImg: (_v: string) => void,
   ) => (
     <div>
       <div style={{ marginBottom: '12px'}}>

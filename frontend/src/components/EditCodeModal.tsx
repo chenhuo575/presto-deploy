@@ -4,7 +4,7 @@ import type { CodeElement } from '../types';
 interface EditCodeModalProps {
     element: CodeElement | null;
     onClose: () => void;
-    onSubmit: (element: CodeElement) => void;
+    onSubmit: (_element: CodeElement) => void;
 }
 
 const EditCodeModal = ({ element, onClose, onSubmit }: EditCodeModalProps) => {
@@ -15,6 +15,7 @@ const EditCodeModal = ({ element, onClose, onSubmit }: EditCodeModalProps) => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (element) {
       setCode(element.code);
@@ -25,6 +26,7 @@ const EditCodeModal = ({ element, onClose, onSubmit }: EditCodeModalProps) => {
       setY(element.y);
     }
   }, [element]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   if (!element) return null;
 

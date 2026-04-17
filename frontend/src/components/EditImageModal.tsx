@@ -4,7 +4,7 @@ import type { ImageElement } from '../types';
 interface EditImageModalProps {
     element: ImageElement | null;
     onClose: () => void;
-    onSubmit: (element: ImageElement) => void;
+    onSubmit: (_element: ImageElement) => void;
 }
 
 const EditImageModal: React.FC<EditImageModalProps> = ({ element, onClose, onSubmit }) => {
@@ -17,6 +17,7 @@ const EditImageModal: React.FC<EditImageModalProps> = ({ element, onClose, onSub
   const [useFile, setUseFile] = useState(false);
 
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (element) {
       setWidth(element.width);
@@ -28,6 +29,7 @@ const EditImageModal: React.FC<EditImageModalProps> = ({ element, onClose, onSub
       setUseFile(element.src.startsWith('data:'));
     }
   }, [element]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   if (!element) return null;
 

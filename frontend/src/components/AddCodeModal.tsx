@@ -10,7 +10,7 @@ export interface CodeData {
 interface AddCodeModalProps {
     open: boolean;
     onClose: () => void;
-    onSubmit: (data: CodeData) => void;
+    onSubmit: (_data: CodeData) => void;
 }
 
 const AddCodeModal = ({ open, onClose, onSubmit }: AddCodeModalProps) => {

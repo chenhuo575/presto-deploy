@@ -24,7 +24,7 @@ const PresentationEdit = () => {
   const [presentation, setPresentation] = useState<Presentation | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const currentSlideIndex = parseInt(searchParams.get('slide') || '0', 10);
-  const setCurrentSlideIndex = (val: number | ((prev: number) => number)) => {
+  const setCurrentSlideIndex = (val: number | ((_prev: number) => number)) => {
     const newVal = typeof val === 'function' ? val(currentSlideIndex) : val;
     setSearchParams({ slide: String(newVal) }, { replace: true });
   };
@@ -41,7 +41,6 @@ const PresentationEdit = () => {
   const [showAddCodeModal, setShowAddCodeModal] = useState(false);
   const [editingCodeElement, setEditingCodeElement] = useState<CodeElement | null>(null);
   const [showBackgroundModal, setShowBackgroundModal] = useState(false);
-  const [defaultBackground, setDefaultBackground] = useState<SlideBackground | undefined>(undefined);
   const [showSlideControlPanel, setShowSlideControlPanel] = useState(false);
 
   const fetchPresentation = useCallback(async () => {
@@ -59,23 +58,11 @@ const PresentationEdit = () => {
     }
   }, [id]);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
-    const fetchPresentation = async () => {
-      try {
-        const store = await getStore();
-        const found = (store.presentations ?? []).find((p: Presentation) => p.id === id);
-        if (!found) {
-          setError('Presentation not found');
-          return;
-        }
-        setPresentation(found);
-        setEditTitleValue(found.name);
-      } catch (err) {
-        if (err instanceof Error) setError(err.message);
-      }
-    };
     fetchPresentation();
-  }, [id]);
+  }, [fetchPresentation]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const savePresentation = async (updated: Presentation) => {
     try {

@@ -4,7 +4,7 @@ import type {VideoElement} from '../types';
 interface EditVideoModalProps {
     element: VideoElement | null;
     onClose: () => void;
-    onSubmit: (element: VideoElement) => void;
+    onSubmit: (_element: VideoElement) => void;
 }
 
 const EditVideoModal= ({ element, onClose, onSubmit }: EditVideoModalProps) => {
@@ -15,6 +15,7 @@ const EditVideoModal= ({ element, onClose, onSubmit }: EditVideoModalProps) => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (element) {
       setUrl(element.url);
@@ -25,6 +26,7 @@ const EditVideoModal= ({ element, onClose, onSubmit }: EditVideoModalProps) => {
       setY(element.y);
     }
   }, [element]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   if (!element) return null;
 

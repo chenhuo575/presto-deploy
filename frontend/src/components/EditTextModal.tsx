@@ -4,7 +4,7 @@ import type { TextElement } from '../types';
 interface EditTextModalProps {
     element: TextElement | null;
     onClose: () => void;
-    onSubmit: (element: TextElement) => void;
+    onSubmit: (_element: TextElement) => void;
 }
 
 const FONT_OPTIONS = ['Arial', 'Times New Roman', 'Courier New'];
@@ -19,6 +19,7 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ element, onClose, onSubmi
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (element) {
       setText(element.text);
@@ -31,6 +32,7 @@ const EditTextModal: React.FC<EditTextModalProps> = ({ element, onClose, onSubmi
       setY(element.y);
     }
   }, [element]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

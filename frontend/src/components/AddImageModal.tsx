@@ -1,10 +1,9 @@
-import React, { useEffect, useState} from 'react';
-import type { ImageElement } from '../types';
+import React, { useState} from 'react';
 
 interface AddImageModalProps {
     open: boolean;
     onClose: () => void;
-    onSubmit: (data: ImageData) => void;
+    onSubmit: (_data: ImageData) => void;
 }
 
 export interface ImageData{

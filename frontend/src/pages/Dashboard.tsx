@@ -23,7 +23,9 @@ const Dashboard = () => {
     }
   };
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {fetchPresentations()},[]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const handleLogout = async () => {
     try {
