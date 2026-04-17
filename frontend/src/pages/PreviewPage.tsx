@@ -5,11 +5,11 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/vs2015.css';
 
 const PreviewPage: React.FC = () => {
-    const { id } = useParams();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [presentation, setPresentation] = useState<any>(null);
-    const [error, setError] = useState<string | null>(null);
-    const slideIndex = parseInt(searchParams.get('slide') || '0', 10);
+  const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [presentation, setPresentation] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const slideIndex = parseInt(searchParams.get('slide') || '0', 10);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,8 +28,8 @@ const PreviewPage: React.FC = () => {
     fetchData();
   }, [id]);
 
-    const slides = presentation?.slides || [];
-    const totalSlides = slides.length;
+  const slides = presentation?.slides || [];
+  const totalSlides = slides.length;
 
   const goTo = useCallback((idx: number) => {
     if (idx >= 0 && idx < totalSlides) {
