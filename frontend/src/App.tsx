@@ -4,6 +4,8 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import Dashboard from './pages/Dashboard';
 import PresentationEdit from './pages/PresentationEdit';
+import PreviewPage from './pages/PreviewPage';
+
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/presentation/:id" element={<PresentationEdit />} />
+        <Route path="/preview/:id/preview" element={<PreviewPage />} />
       </Routes>
     </BrowserRouter>
   );
