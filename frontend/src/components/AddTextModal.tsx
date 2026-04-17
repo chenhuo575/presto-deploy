@@ -18,73 +18,73 @@ export interface TextData{
 const FONT_OPTIONS = ['Arial', 'Times New Roman', 'Courier New'];
 
 const AddTextModal: React.FC<AddTextModalProps> = ({ open, onClose, onSubmit }) => {
-    const [text, setText] = useState('');
-    const [width, setWidth] = useState(25);
-    const [height, setHeight] = useState(25);
-    const [fontSize, setFontSize] = useState(1);
-    const [color, setColor] = useState('#000000');
-    const [fontFamily, setFontFamily] = useState('Arial');
-    const [error, setError] = useState('');
+  const [text, setText] = useState('');
+  const [width, setWidth] = useState(25);
+  const [height, setHeight] = useState(25);
+  const [fontSize, setFontSize] = useState(1);
+  const [color, setColor] = useState('#000000');
+  const [fontFamily, setFontFamily] = useState('Arial');
+  const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (width < 0 || width > 100 || height < 0 || height > 100 ){
-            setError('Width and height must be between 0 and 100');
-            return;
-        }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (width < 0 || width > 100 || height < 0 || height > 100 ){
+      setError('Width and height must be between 0 and 100');
+      return;
+    }
 
     onSubmit({ width, height, text, fontSize, color, fontFamily });
-        setWidth(25);
-        setHeight(25);
-        setText('');
-        setFontSize(1);
-        setColor('#000000');
-        setFontFamily('Arial');
-        setError('');
-        onClose();
-    };
+    setWidth(25);
+    setHeight(25);
+    setText('');
+    setFontSize(1);
+    setColor('#000000');
+    setFontFamily('Arial');
+    setError('');
+    onClose();
+  };
 
-    if (!open) return null;
+  if (!open) return null;
 
-    return (
-        <div 
-            style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: 1000,
-            }}
-            onClick={onClose}
+  return (
+    <div 
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          backgroundColor: 'white',
+          padding: '24px',
+          borderRadius: '8px',
+          minWidth: '400px',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2>Add Text box</h2>
+        {error && (
+          <div style={{ 
+            color: 'red', 
+            marginBottom: '16px',
+            padding: '8px',
+            backgroundColor: '#ffe6e6',
+            borderRadius: '4px',
+          }}>
+            {error}
+            <button 
+              onClick={() => setError('')}
+              style={{ marginLeft: '8px', cursor: 'pointer' }}
             >
-            <div
-                style={{
-                    backgroundColor: 'white',
-                    padding: '24px',
-                    borderRadius: '8px',
-                    minWidth: '400px',
-                }}
-                onClick={(e) => e.stopPropagation()}
-            >
-                <h2>Add Text box</h2>
-                {error && (
-                    <div style={{ 
-                        color: 'red', 
-                        marginBottom: '16px',
-                        padding: '8px',
-                        backgroundColor: '#ffe6e6',
-                        borderRadius: '4px',
-                    }}>
-                        {error}
-                        <button 
-                        onClick={() => setError('')}
-                        style={{ marginLeft: '8px', cursor: 'pointer' }}
-                        >
                         ✕
                         </button>
                     </div>
