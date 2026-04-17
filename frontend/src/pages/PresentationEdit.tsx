@@ -1,5 +1,5 @@
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, type ChangeEvent } from 'react';
 import ErrorPopup from '../components/ErrorPopup';
 import AddTextModal, { type TextData } from '../components/AddTextModal';
 import EditTextModal from '../components/EditTextModal';
@@ -60,8 +60,22 @@ const PresentationEdit = () => {
   }, [id]);
 
   useEffect(() => {
+    const fetchPresentation = async () => {
+      try {
+        const store = await getStore();
+        const found = (store.presentations ?? []).find((p: Presentation) => p.id === id);
+        if (!found) {
+          setError('Presentation not found');
+          return;
+        }
+        setPresentation(found);
+        setEditTitleValue(found.name);
+      } catch (err) {
+        if (err instanceof Error) setError(err.message);
+      }
+    };
     fetchPresentation();
-  }, [fetchPresentation]);
+  }, [id]);
 
   const savePresentation = async (updated: Presentation) => {
     try {
@@ -96,7 +110,7 @@ const PresentationEdit = () => {
     setShowEditTitle(false);
   };
 
-  const handleThumbnailChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleThumbnailChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !presentation) return;
     const reader = new FileReader();
