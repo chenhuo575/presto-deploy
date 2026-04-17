@@ -25,71 +25,71 @@ const Dashboard = () => {
 
     useEffect(() => {fetchPresentations()},[]);
 
-    const handleLogout = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            await fetch(`http://localhost:${config.BACKEND_PORT}/admin/auth/logout`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-            });
-            localStorage.removeItem('token');
-            navigate('/');
-        } catch {
-            setError('An unexpected error occurred. Please try again.');
-        }
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      await fetch(`http://localhost:${config.BACKEND_PORT}/admin/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });
+      localStorage.removeItem('token');
+      navigate('/');
+    } catch {
+      setError('An unexpected error occurred. Please try again.');
+    }
+  };
+
+  const handleCreate = async () => {
+    try {
+      const store = await getStore();
+      const existingPresentations = store.presentations ?? [];
+      const defaultSlide: Slide = {
+        id: `slide-${Date.now()}`,
+        elements: [],
+      };
+      const newPresentation: Presentation = {
+        id: `pres-${Date.now()}`,
+        name: newName || 'Untitled Presentation',
+        description: newDescription,
+        thumbnail: newThumbnail,
+        slides: [defaultSlide],
+      };
+      const updated = {
+        ...store,
+        presentations: [...existingPresentations, newPresentation],
+      };
+      await putStore(updated);
+      setPresentations(updated.presentations);
+      setShowCreateModal(false);
+      setNewName('');
+      setNewDescription('');
+      setNewThumbnail('');
+    } catch (err) {
+      if (err instanceof Error) setError(err.message);
+    }
+  };
+
+  const handleThumbnailFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setNewThumbnail(reader.result as string);
     };
+    reader.readAsDataURL(file);
+  };
 
-    const handleCreate = async () => {
-        try {
-        const store = await getStore();
-        const existingPresentations = store.presentations ?? [];
-        const defaultSlide: Slide = {
-            id: `slide-${Date.now()}`,
-            elements: [],
-        };
-        const newPresentation: Presentation = {
-            id: `pres-${Date.now()}`,
-            name: newName || 'Untitled Presentation',
-            description: newDescription,
-            thumbnail: newThumbnail,
-            slides: [defaultSlide],
-        };
-        const updated = {
-            ...store,
-            presentations: [...existingPresentations, newPresentation],
-        };
-        await putStore(updated);
-        setPresentations(updated.presentations);
-        setShowCreateModal(false);
-        setNewName('');
-        setNewDescription('');
-        setNewThumbnail('');
-        } catch (err) {
-        if (err instanceof Error) setError(err.message);
-        }
-    };
+  return (
+    <div style={{ padding: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Dashboard</h2>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
 
-    const handleThumbnailFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onloadend = () => {
-        setNewThumbnail(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-    };
-
-    return (
-        <div style={{ padding: '20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2>Dashboard</h2>
-                <button onClick={handleLogout}>Logout</button>
-            </div>
-
-            <button onClick={() => setShowCreateModal(true)}>Create New Presentation</button>
+      <button onClick={() => setShowCreateModal(true)}>Create New Presentation</button>
 
             <div style={{
                 display: 'flex',
