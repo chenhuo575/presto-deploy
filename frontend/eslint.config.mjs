@@ -11,6 +11,19 @@ export default defineConfig(
   tseslint.configs.recommended,
   { ignores: ["dist", "src/__test__", "**/*config.js"] },
   {
+    files: ['cypress/**/*.js'],
+    languageOptions: {
+      globals: {
+        cy: 'readonly',
+        Cypress: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+      },
+    },
+  },
+  {
     files: ["**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2022,
