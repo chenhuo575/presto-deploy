@@ -6,8 +6,8 @@ describe('Happy Path', () => {
 
   it('registers, creates presentation, edits, navigates, deletes, logs out and back in', () => {
     cy.visit('/register');
-    cy.get('input[type="email"], input[id*="email"], input[name*="email"]').first().type(email);
-    cy.get('input').filter((i, el) => el.placeholder?.toLowerCase().includes('name') || el.id?.includes('name') || el.name?.includes('name')).first().type(name);
+    cy.get('input[type="email"]').first().type(email);
+    cy.get('input[type="text"]').first().type(name);
     cy.get('input[type="password"]').first().type(password);
     cy.get('input[type="password"]').eq(1).type(password);
     cy.get('button').contains(/register|sign up|submit/i).click();
@@ -15,9 +15,10 @@ describe('Happy Path', () => {
     cy.wait(1000);
 
     cy.contains('Create New Presentation').click();
-    cy.get('input#pres-name').type(presName);
-    cy.get('textarea#pres-desc').type('A test description');
-    cy.contains('Create').click();
+    cy.wait(500);
+    cy.get('div').contains('Create').parent().parent().find('input[type="text"]').first().type(presName);
+    cy.get('div').contains('Create').parent().parent().find('textarea').first().type('A test description');
+    cy.contains('button', /^Create$/).click();
     cy.wait(1000);
     cy.contains(presName).should('be.visible');
 
@@ -27,8 +28,8 @@ describe('Happy Path', () => {
 
     cy.contains('✏').click();
     cy.wait(500);
-    cy.get('input').last().clear().type('Updated Title');
-    cy.contains('Save').click();
+    cy.get('input[type="text"]').filter(':visible').last().clear().type('Updated Title');
+    cy.contains('button', 'Save').click();
     cy.wait(1000);
     cy.contains('Updated Title').should('be.visible');
 
@@ -39,7 +40,7 @@ describe('Happy Path', () => {
       fileName: 'thumb.png',
       mimeType: 'image/png',
     });
-    cy.contains('Save').click();
+    cy.contains('button', 'Save').click();
     cy.wait(1000);
 
     cy.contains('+ New Slide').click();
@@ -47,31 +48,31 @@ describe('Happy Path', () => {
     cy.contains('+ New Slide').click();
     cy.wait(500);
 
-    cy.contains('▶').click();
+    cy.get('button').contains('▶').click();
     cy.wait(500);
-    cy.contains('▶').click();
+    cy.get('button').contains('▶').click();
     cy.wait(500);
-    cy.contains('◀').click();
+    cy.get('button').contains('◀').click();
     cy.wait(500);
 
-    cy.contains('Back').click();
+    cy.contains('button', 'Back').click();
     cy.url().should('include', '/dashboard');
     cy.wait(1000);
 
     cy.contains('Updated Title').click();
     cy.wait(1000);
-    cy.contains('Delete Presentation').click();
+    cy.contains('button', 'Delete Presentation').click();
     cy.wait(500);
-    cy.contains('Yes').click();
+    cy.contains('button', 'Yes').click();
     cy.url().should('include', '/dashboard');
     cy.wait(1000);
 
-    cy.contains('Logout').click();
+    cy.contains('button', 'Logout').click();
     cy.url().should('eq', Cypress.config().baseUrl + '/');
     cy.wait(1000);
 
     cy.visit('/login');
-    cy.get('input[type="email"], input[id*="email"]').first().type(email);
+    cy.get('input[type="email"]').first().type(email);
     cy.get('input[type="password"]').first().type(password);
     cy.get('button').contains(/login|sign in|submit/i).click();
     cy.url().should('include', '/dashboard');
