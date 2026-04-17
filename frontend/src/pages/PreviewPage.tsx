@@ -65,6 +65,74 @@ const PreviewPage: React.FC = () => {
     }
 
     return (
-        
-    )
-}
+        <div style={{ width: '100vw', height: '100vh', backgroundColor: '#000', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+                <div style={{
+                width: '100%', height: '100%', position: 'relative',
+                ...backgroundStyle,
+                }}>
+                    {(currentSlide.elements || []).map((el: any, i: number) => {
+                        const posStyle: React.CSSProperties = {
+                            position: 'absolute',
+                            left: `${el.x ?? 0}%`,
+                            top: `${el.y ?? 0}%`,
+                            width: `${el.width ?? 10}%`,
+                            height: `${el.height ?? 10}%`,
+                            overflow: 'auto',
+                            border: 'none', 
+                            zIndex: el.zIndex ?? i,
+                        };
+                        if (el.type === 'text') {
+                            return (
+                                <div key={i} style={{ ...posStyle, fontSize: `${el.fontSize || 1}em`, color: el.color || '#000', fontFamily: el.fontFamily || 'inherit', whiteSpace: 'pre-wrap', textAlign: 'left' }}>
+                                    {el.text}
+                                </div>
+                            );
+                        }
+                        if (el.type === 'image') {
+                            return (
+                                <div key={i} style={{ ...posStyle, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <img src={el.src} alt={el.alt || ''} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                                </div>
+                            );
+                        }
+                        if (el.type === 'video') {
+                            return (
+                                <div key={i} style={posStyle}>
+                                    <iframe src={`${el.url}${el.autoplay ? '?autoplay=1' : ''}`} style={{ width: '100%', height: '100%', border: 'none' }} allow="autoplay" title="video" />
+                                </div>
+                            );
+                        }
+                        if (el.type === 'code') {
+                            return (
+                                <div key={i} style={{ ...posStyle, fontSize: `${el.fontSize || 1}em`, whiteSpace: 'pre', fontFamily: 'monospace', backgroundColor: '#1e1e1e', color: '#d4d4d4', padding: 8 }}>
+                                    {el.code}
+                                </div>
+                            );
+                        }
+                        return null;
+                    })}
+                </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 24, padding: 12, backgroundColor: 'rgba(0,0,0,0.7)' }}>
+                <button
+                    onClick={() => goTo(slideIndex - 1)}
+                    disabled={slideIndex <= 0}
+                    style={{ fontSize: 24, padding: '4px 16px', cursor: slideIndex <= 0 ? 'not-allowed' : 'pointer', opacity: slideIndex <= 0 ? 0.3 : 1 }}
+                    aria-label="Previous slide"
+                    >◀
+                </button>
+                <span style={{ color: '#fff', fontSize: 16 }}>Slide {slideIndex + 1} / {totalSlides}</span>
+                <button
+                    onClick={() => goTo(slideIndex + 1)}
+                    disabled={slideIndex >= totalSlides - 1}
+                    style={{ fontSize: 24, padding: '4px 16px', cursor: slideIndex >= totalSlides - 1 ? 'not-allowed' : 'pointer', opacity: slideIndex >= totalSlides - 1 ? 0.3 : 1 }}
+                    aria-label="Next slide"
+                    >▶
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default PreviewPage;
