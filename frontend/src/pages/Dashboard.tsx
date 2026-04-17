@@ -102,8 +102,9 @@ const Dashboard = () => {
                     key={pres.id}
                     onClick={() => navigate(`/presentation/${pres.id}`)}
                     style={{
-                    width: '250px',
+                    flex: '1 1 250px',
                     minWidth: '100px',
+                    maxWidth: '400px',
                     aspectRatio: '2 / 1',
                     border: '1px solid #ccc',
                     borderRadius: '8px',
