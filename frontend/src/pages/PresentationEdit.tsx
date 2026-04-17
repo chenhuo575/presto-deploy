@@ -226,9 +226,9 @@ const PresentationEdit = () => {
     if (!presentation) return;
     const updatedSlide = presentation.slides.map((slide, i) => i === currentSlideIndex
       ? {
-          ...slide,
-          elements: slide.elements.map((el) => (el.id === updatedElement.id ? updatedElement : el)),
-        }
+        ...slide,
+        elements: slide.elements.map((el) => (el.id === updatedElement.id ? updatedElement : el)),
+      }
       : slide
     );
     await savePresentation({ ...presentation, slides: updatedSlide });
@@ -238,9 +238,9 @@ const PresentationEdit = () => {
     if (!presentation) return;
     const updatedSlide = presentation.slides.map((slide, i) => i === currentSlideIndex
       ? {
-          ...slide,
-          elements: slide.elements.filter((el) => el.id !== elementId),
-        }
+        ...slide,
+        elements: slide.elements.filter((el) => el.id !== elementId),
+      }
       : slide
     );
     await savePresentation({ ...presentation, slides: updatedSlide });
@@ -250,9 +250,9 @@ const PresentationEdit = () => {
     if (!presentation) return;
     const updatedSlide = presentation.slides.map((slide, i) => i === currentSlideIndex
       ? {
-          ...slide,
-          background: bg,
-        }
+        ...slide,
+        background: bg,
+      }
       : slide
     );
     await savePresentation({ ...presentation, slides: updatedSlide });
@@ -293,7 +293,7 @@ const PresentationEdit = () => {
       const textEl = element as TextElement;
       return (
         <div
-                style={{
+          style={{
             position: 'absolute',
             left: `${textEl.x}%`,
             top: `${textEl.y}%`,
@@ -338,51 +338,51 @@ const PresentationEdit = () => {
             e.preventDefault();
             handleDeleteElement(imgEl.id);
           }}
-          >
-            <img
-              src={imgEl.src}
-              alt={imgEl.alt}
-              style={{
-                maxWidth: '100%',
-                maxHeight: '100%',
-                objectFit: 'contain',
-              }}
-            />
-          </div>
-        );
+        >
+          <img
+            src={imgEl.src}
+            alt={imgEl.alt}
+            style={{
+              maxWidth: '100%',
+              maxHeight: '100%',
+              objectFit: 'contain',
+            }}
+          />
+        </div>
+      );
     }
     if (element.type === 'video') {
-        const videoEl = element as VideoElement;
-        const videoSrc = videoEl.autoPlay 
-          ? `${videoEl.url}${videoEl.url.includes('?') ? '&' : '?'}autoplay=1&mute=1`
-          : videoEl.url;
-        return (
-          <div
-            key={videoEl.id}
-            style={{
-              position: 'absolute',
-              left: `${videoEl.x}%`,
-              top: `${videoEl.y}%`,
-              width: `${videoEl.width}%`,
-              height: `${videoEl.height}%`,
-              border: '1px solid #ccc',
-              overflow: 'hidden',
-            }}
-            onDoubleClick={() => setEditingVideoElement(videoEl)}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              handleDeleteElement(videoEl.id);
-            }}
-          >
-            <iframe
-              src={videoSrc}
-              width="100%"
-              height="100%"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              style={{ border: 'none' }}
-            />
-          </div>
+      const videoEl = element as VideoElement;
+      const videoSrc = videoEl.autoPlay 
+        ? `${videoEl.url}${videoEl.url.includes('?') ? '&' : '?'}autoplay=1&mute=1`
+        : videoEl.url;
+      return (
+        <div
+          key={videoEl.id}
+          style={{
+            position: 'absolute',
+            left: `${videoEl.x}%`,
+            top: `${videoEl.y}%`,
+            width: `${videoEl.width}%`,
+            height: `${videoEl.height}%`,
+            border: '1px solid #ccc',
+            overflow: 'hidden',
+          }}
+          onDoubleClick={() => setEditingVideoElement(videoEl)}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            handleDeleteElement(videoEl.id);
+          }}
+        >
+          <iframe
+            src={videoSrc}
+            width="100%"
+            height="100%"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            style={{ border: 'none' }}
+          />
+        </div>
       );
     }
     if (element.type === 'code') {
