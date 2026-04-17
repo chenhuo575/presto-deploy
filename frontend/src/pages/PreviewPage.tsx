@@ -1,6 +1,8 @@
-import React, { useEffect, useState, useCallback, use } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { getStore } from '../api';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/vs2015.css';
 
 const PreviewPage: React.FC = () => {
     const { id } = useParams();
@@ -104,9 +106,12 @@ const PreviewPage: React.FC = () => {
                             );
                         }
                         if (el.type === 'code') {
+                            const highlighted = hljs.highlightAuto(el.code || '', ['javascript', 'python', 'c']).value;
                             return (
-                                <div key={i} style={{ ...posStyle, fontSize: `${el.fontSize || 1}em`, whiteSpace: 'pre', fontFamily: 'monospace', backgroundColor: '#1e1e1e', color: '#d4d4d4', padding: 8 }}>
-                                    {el.code}
+                                <div key={i} style={{ ...posStyle, fontSize: `${el.fontSize || 1}em`, whiteSpace: 'pre', fontFamily: 'monospace', backgroundColor: '#1e1e1e', color: '#d4d4d4', padding: 8, overflow: 'auto' }}>
+                                    <pre style={{ margin: 0, fontFamily: 'monospace' }}>
+                                        <code dangerouslySetInnerHTML={{ __html: highlighted }} />
+                                    </pre>
                                 </div>
                             );
                         }
