@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent  } from 'react';
 import type { SlideBackground } from '../types';
 
 interface BackgroundModalProps {
@@ -54,7 +54,7 @@ const BackgroundModal = ({ open, onClose, currentSlideBackground, defaultBackgro
 
   if (!open) return null;
 
-  const handleFileUpload = (setter: (v: string) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = (setter: (v: string) => void) => (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();

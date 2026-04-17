@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import ErrorPopup from '../components/ErrorPopup';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent  } from 'react';
 import config from '../../backend.config.json';
 import { getStore, putStore } from '../api';
 import type { Presentation, Slide } from '../types';
@@ -72,7 +72,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleThumbnailFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleThumbnailFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
