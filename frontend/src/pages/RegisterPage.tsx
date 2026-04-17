@@ -43,20 +43,20 @@ const RegisterPage = () => {
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Email:</label>
-          <input type="email" value={email} onChange={(e)=> setEmail(e.target.value)} required />
+          <label htmlFor="register-email">Email:</label>
+          <input id="register-email" type="email" value={email} onChange={(e)=> setEmail(e.target.value)} required />
         </div>
         <div>
-          <label>Name:</label>
-          <input type="text" value={name} onChange={(e)=> setName(e.target.value)} required />
+          <label htmlFor="register-name">Name:</label>
+          <input id="register-name" type="text" value={name} onChange={(e)=> setName(e.target.value)} required />
         </div>
         <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <label htmlFor="register-password">Password:</label>
+          <input id="register-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
         <div>
-          <label>Confirm Password:</label>
-          <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          <label htmlFor="register-confirm-password">Confirm Password:</label>
+          <input id="register-confirm-password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
         </div>
         <button type="submit">Register</button>
       </form>

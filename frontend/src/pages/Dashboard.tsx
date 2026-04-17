@@ -148,8 +148,9 @@ const Dashboard = () => {
           <div style={{ background: 'white', padding: '24px', borderRadius: '8px', minWidth: '350px', color: '#000' }}>
             <h3>Create New Presentation</h3>
             <div style={{ marginBottom: '12px' }}>
-              <label>Name:</label>
+              <label htmlFor="pres-name">Name:</label>
               <input
+                id="pres-name"
                 type="text"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
@@ -157,8 +158,9 @@ const Dashboard = () => {
               />
             </div>
             <div style={{ marginBottom: '12px' }}>
-              <label>Description:</label>
+              <label htmlFor="pres-desc">Description:</label>
               <textarea
+                id="pres-desc"
                 value={newDescription}
                 onChange={(e) => setNewDescription(e.target.value)}
                 style={{ width: '100%', padding: '6px' }}
