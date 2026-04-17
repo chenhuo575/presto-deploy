@@ -6,24 +6,24 @@ import { getStore, putStore } from '../api';
 import type { Presentation, Slide } from '../types';
 
 const Dashboard = () => {
-    const [error, setError] = useState('');
-    const [presentations, setPresentations] = useState<Presentation[]>([]);
-    const [newName, setNewName] = useState('');
-    const [showCreateModal, setShowCreateModal] = useState(false);
-    const [newDescription, setNewDescription] = useState('');
-    const [newThumbnail, setNewThumbnail] = useState('');
-    const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [presentations, setPresentations] = useState<Presentation[]>([]);
+  const [newName, setNewName] = useState('');
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newDescription, setNewDescription] = useState('');
+  const [newThumbnail, setNewThumbnail] = useState('');
+  const navigate = useNavigate();
 
-    const fetchPresentations = async () => {
-        try {
-            const store = await getStore();
-            setPresentations(store.presentations ?? []);
-        } catch (err) {
-            if (err instanceof Error) setError(err.message);
-        }
-    };
+  const fetchPresentations = async () => {
+    try {
+      const store = await getStore();
+      setPresentations(store.presentations ?? []);
+    } catch (err) {
+      if (err instanceof Error) setError(err.message);
+    }
+  };
 
-    useEffect(() => {fetchPresentations()},[]);
+  useEffect(() => {fetchPresentations()},[]);
 
   const handleLogout = async () => {
     try {
